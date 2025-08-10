@@ -22,4 +22,6 @@ Route::group([
 ], function (Router $router) {
     $router->get('_iconify_search', [\DagaSmart\BizAdmin\Controllers\IndexController::class, 'iconifySearch']);
 
+    $router->get('test/index', [\App\Admin\Controllers\TestController::class, 'index']);
+
 });
