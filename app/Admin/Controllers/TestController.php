@@ -15,8 +15,7 @@ class TestController extends Controller
 
         admin_transaction(function () {
             $res = AdminUser::get()->toArray();
-            dump(admin_user());
+            dump($res);
         });
-        return [];
     }
 }
