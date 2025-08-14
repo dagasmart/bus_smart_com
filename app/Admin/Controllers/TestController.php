@@ -2,20 +2,25 @@
 
 namespace App\Admin\Controllers;
 
-use DagaSmart\BizAdmin\Admin;
-use DagaSmart\BizAdmin\Models\AdminUser;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
+use Yansongda\Pay\Pay;
+
 
 class TestController extends Controller
 {
+
     public function index()
     {
 
-        admin_transaction(function () {
-            $res = AdminUser::get()->toArray();
-            dump($res);
-        });
+        Pay::config(config('pay'));
+
+        return Pay::alipay()->h5([
+            'out_trade_no' => time(),
+            'total_amount' => '0.01',
+            'subject' => 'yansongda 测试 - 01',
+            'quit_url' => 'https://yansongda.cn',
+        ]);
+
     }
+
 }
