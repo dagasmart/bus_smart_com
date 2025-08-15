@@ -11,8 +11,12 @@ class TestController extends Controller
 
     public function index()
     {
+        dump(base_path('data/cert'));
+
+        dump(settings()->get('payment'));die;
 
         Pay::config(config('pay'));
+
 
         return Pay::alipay()->h5([
             'out_trade_no' => time(),

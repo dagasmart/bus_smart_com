@@ -60,6 +60,7 @@ return [
             'image' => env('ADMIN_UPLOAD_IMAGE_DIRECTORY', 'images'),
             'file'  => env('ADMIN_UPLOAD_FILE_DIRECTORY', 'files'),
             'rich'  => env('ADMIN_UPLOAD_RICH_DIRECTORY', 'rich'),
+            'cert'  => env('ADMIN_UPLOAD_CERT_DIRECTORY', 'cert'),
         ],
     ],
 

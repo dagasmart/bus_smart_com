@@ -60,6 +60,15 @@ return [
             'report' => false,
         ],
 
+        // 用于存储证书的空间
+        'cert' => [
+            'driver' => 'local',
+            'root' => base_path('data/cert'),
+            'url' => base_path('data/cert'),
+            'throw' => false,
+            'report' => false,
+        ],
+
     ],
 
     /*
