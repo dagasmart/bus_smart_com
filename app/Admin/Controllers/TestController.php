@@ -11,7 +11,7 @@ class TestController extends Controller
 
     public function index()
     {
-        //dump(base_path('data/cert'));
+        dump(asset('css/custom.css'));
 
         dump(settings()->get('payment'));die;
 
