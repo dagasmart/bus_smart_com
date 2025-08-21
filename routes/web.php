@@ -16,5 +16,5 @@ Route::domain('www.smart.com')->get('/', fn() => redirect('/api'));
  * 路由报错回调提示
  */
 Route::fallback(function () {
-    admin_abort('页面不存在（可能原因：1.路由未定义；2.或扩展插件未启用）');
+    admin_abort('页面不存在（可能原因：1.路由未定义；2.或扩展插件未启用）', [], 1);
 });

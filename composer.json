@@ -15,7 +15,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "symfony/psr-http-message-bridge": "^7.3",
-        "yansongda/pay": "^3.7"
+        "yansongda/pay": "^3.7",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
