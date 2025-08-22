@@ -28,14 +28,17 @@ class Aes
     //加密
     public function encrypt($data): string
     {
-        return base64_encode(openssl_encrypt($data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv));
+        $base64_encode = base64_encode(openssl_encrypt($data, $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv));
+        return strtr($base64_encode, '+/', '-_');
     }
     //解密
 
     public function decrypt($data): false|string
     {
+        $data = strtr($data, '-_', '+/');
         return openssl_decrypt(base64_decode($data), $this->method, $this->key, OPENSSL_RAW_DATA, $this->iv);
     }
+
 
 
 }
