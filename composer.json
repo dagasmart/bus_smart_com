@@ -10,13 +10,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-openssl": "*",
         "dagasmart/bizadmin": "^2.1",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^12.25",
+        "laravel/reverb": "*",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "symfony/psr-http-message-bridge": "^7.3",
         "yansongda/pay": "^3.7",
-        "ext-openssl": "*"
+        "ext-iconv": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

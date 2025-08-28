@@ -12,7 +12,7 @@ if (is_dir(base_path('modules'))) {
 
 return [
     // 应用名称
-    'name'           => env('ADMIN_APP_NAME', 'Biz Admin™'),
+    'name'           => env('ADMIN_APP_NAME', 'dagaSmart™'),
 
     // 应用 logo
     'logo'           => env('ADMIN_LOGO', '/admin-assets/logo.png'),
