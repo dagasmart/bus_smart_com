@@ -32,6 +32,8 @@ return [
     'add'              => '新增',
     'save'             => '保存',
     'detail'           => '详情',
+    'record'           => '流水',
+    'log'              => '日志',
 
     'developer'             => '开发',
     'code_generator'        => '代码生成器',

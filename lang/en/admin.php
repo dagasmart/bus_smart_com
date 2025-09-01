@@ -32,6 +32,8 @@ return [
     'add'              => 'Add',
     'save'             => 'Save',
     'detail'           => 'Detail',
+    'record'           => 'Record',
+    'log'              => 'Log',
 
     'developer'             => 'Developer',
     'code_generator'        => 'Code Generator',
