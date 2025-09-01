@@ -206,6 +206,7 @@ JS
     transform-style: preserve-3d;
     transform: rotateX(90deg) translateY(50px) translateZ(-50px);
     background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 100%;
   }
   .cube div {
     background-color: rgba(64, 158, 255, 0.7);
@@ -214,6 +215,7 @@ JS
     height: 100%;
     border: 1px solid rgb(27, 99, 170);
     box-shadow: 0 0 60px rgba(64, 158, 255, 0.7);
+    border-radius: 100%;
   }
   .cube div:nth-child(1) { transform: translateZ(-50px); animation: shade 10s -5s linear infinite; }
   .cube div:nth-child(2) { transform: translateZ(50px) rotateY(180deg); animation: shade 10s linear infinite; }
