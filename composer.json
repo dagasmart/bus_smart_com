@@ -13,6 +13,7 @@
         "ext-bcmath": "*",
         "ext-iconv": "*",
         "ext-openssl": "*",
+        "cloudtay/ripple": "^1.0",
         "dagasmart/bizadmin": "^2.1",
         "laravel/framework": "^12.25",
         "laravel/reverb": "*",

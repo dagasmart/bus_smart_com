@@ -14,6 +14,9 @@ class TestController extends Controller
 
     public function index()
     {
+        $stream = \Ripple\File\File::getContents(admin_chart_path('theme/chalk.json'));
+        dump(json_decode($stream, true));
+        die;
 
         try {
             $fiber = new Fiber(function (): void {
