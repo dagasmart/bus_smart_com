@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use DagaSmart\BizAdmin\Models\SystemSoftOrder;
+use Exception;
 use Fiber;
 use Illuminate\Support\Facades\DB;
 use Yansongda\Pay\Pay;
@@ -14,6 +15,34 @@ class TestController extends Controller
 
     public function index()
     {
+        $coroutine = new Fiber(function () {
+            $res = admin_sql_select("SELECT * FROM trade_order_log");
+            Fiber::suspend($res);
+
+            try {
+                $received = Fiber::suspend('Give me something.');
+                Fiber::suspend(sprintf('You gave me a value of "%s": ', $received));
+            } catch (\Throwable $e) {
+                Fiber::suspend(sprintf('You gave me this exception: "%s".', $e->getMessage()));
+            }
+        } );
+
+        $hello = $coroutine->start();
+        dump($hello); // Hello from the fiber.
+
+        $message = $coroutine->resume('Hello from the code');
+        dump($message); // Give me something.
+
+        $result = $coroutine->throw( new Exception( 'Exception from the code' ) );
+        dump($result);
+
+        die;
+
+
+
+
+
+
         $stream = \Ripple\File\File::getContents(admin_chart_path('theme/chalk.json'));
         dump(json_decode($stream, true));
         die;
