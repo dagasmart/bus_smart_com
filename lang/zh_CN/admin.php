@@ -219,7 +219,7 @@ return [
         'http_path'               => '路由',
         'auth_oper'               => '授权操作',
         'auth_data'               => '授权数据',
-        'auto_generate'           => '自动生成',
+        'auto_generate'           => '已自动生成权限',
         'auto_generate_confirm'   => '权限信息会在 截断权限表&权限菜单关联表 后重新生成, 是否继续操作 ?',
         'parent_id_not_allow'     => '父级不允许设置为当前子权限',
         'name_already_exists'     => '权限名称已存在',
