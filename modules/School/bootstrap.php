@@ -4,9 +4,9 @@ use DagaSmart\BizAdmin\Admin;
 
 $msgBtn = amis()
     ->Icon()
-    ->icon('far fa-bell')
-    ->className('text-xl mr-5')
-    ->style(['color'=>'var(--button-link-default-font-color)'])
+    ->icon('iconfont icon-bell')
+    ->className('text-xl mr-3')
+    ->style(['color'=>''])
     ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '10'])
     ->onEvent([
         'click' => [
@@ -22,7 +22,7 @@ $msgBtn = amis()
                             ->closeOnOutside()
                             ->title(false)
                             ->headerClassName(false)
-                            ->bodyClassName('bg-gray-100 p-0 overflow-hidden')
+                            ->bodyClassName('p-1 overflow-hidden')
                             ->actions()
                             ->body([
                                 amis()
@@ -33,16 +33,11 @@ $msgBtn = amis()
                                         // 系统消息
                                         amis()->Tab()->title('系统消息')->body([
                                             amis()->Page()
-                                                ->style([
-                                                    'padding'=>'none',
-                                                    'height' => 'calc(100vh - 91px)',
-                                                    'border-color' => 'var(--colors-brand-6)',
-                                                    'overflow' => 'hidden'
-                                                ])
-                                                ->className('rounded-xl border border-blue-500 border-dashed')
+                                                ->style(['padding'=>'none','height' => 'calc(100vh - 110px)', 'overflow' => 'hidden'])
+                                                ->className('rounded-xl border-0 border-solid')
                                                 ->body([
                                                     amis()->Card()
-                                                        ->style(['height' => 'calc(100vh - 91px)'])
+                                                        ->style(['height' => 'calc(100vh - 110px)'])
                                                         ->className('border-0 overflow-y-auto')
                                                         ->body([
                                                             amis()->GroupControl()->direction('vertical')->body([
@@ -144,11 +139,11 @@ $msgBtn = amis()
                                         // 站内消息
                                         amis()->Tab()->title('站内消息')->body([
                                             amis()->Page()
-                                                ->style(['padding'=>'none','height' => 'calc(100vh - 91px)', 'overflow' => 'hidden'])
-                                                ->className('rounded-xl border border-blue-500 border-dashed')
+                                                ->style(['padding'=>'none','height' => 'calc(100vh - 110px)', 'overflow' => 'hidden'])
+                                                ->className('rounded-xl border-0 border-solid')
                                                 ->body([
                                                     amis()->Card()
-                                                        ->style(['height' => 'calc(100vh - 91px)'])
+                                                        ->style(['height' => 'calc(100vh - 110px)'])
                                                         ->className('border-0 overflow-y-auto')
                                                         ->body([
                                                             amis()->GroupControl()->direction('vertical')->body([
@@ -257,3 +252,6 @@ $msgBtn = amis()
 
 // 追加到已有按钮前
 Admin::prependNav($msgBtn);
+
+
+Admin::js('/assets/js/ws.js');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\School\Controllers;
+namespace Modules\Master\Controllers;
 
 use Illuminate\Http\Request;
 use DagaSmart\BizAdmin\Renderers\Tab;
@@ -24,7 +24,7 @@ class SettingController extends AdminController
                 'borderColor' => 'var(--colors-brand-6)',
                 'backgroundColor' => 'var(--Tree-item-onChekced-bg)',
             ])
-            ->body("此处请根据实际情况进行修改"),
+            ->body("此处内容仅供演示, 设置项无实际意义，实际开发中请根据实际情况进行修改。"),
             $this->form(),
         ]);
 

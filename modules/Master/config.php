@@ -2,7 +2,7 @@
 
 return [
     // 应用名称
-    'name'           => 'school Admin™',
+    'name'           => 'master Admin™',
 
     // 应用 logo
     'logo'           => '/admin-assets/logo.svg',
@@ -14,16 +14,16 @@ return [
     'default_image' => '/admin-assets/default-image.svg',
 
     // 引导文件
-    'bootstrap' => base_path('\modules/School/bootstrap.php'),
+    'bootstrap' => base_path('\modules/Master/bootstrap.php'),
 
     //外部访问
     'link' => env('APP_LINK', env('APP_URL')),
 
     // 应用路由
     'route' => [
-        'prefix'               => 'school-api',
+        'prefix'               => 'master-api',
         'domain'               => null,
-        'namespace'            => 'Modules\School\Controllers',
+        'namespace'            => 'Modules\Master\Controllers',
         'middleware'           => ['admin'],
         // 不包含额外路由, 配置后, 不会追加新增/详情/编辑页面路由
         'without_extra_routes' => [
@@ -38,17 +38,17 @@ return [
         'enable'        => true,
         // 是否开启鉴权
         'permission'    => true,
-        'guard'         => 'school',
+        'guard'         => 'master',
         'guards' => [
-            'school' => [
+            'master' => [
                 'driver'   => 'sanctum',
-                'provider' => 'school',
+                'provider' => 'master',
             ],
         ],
         'providers' => [
-            'school' => [
+            'master' => [
                 'driver' => 'eloquent',
-                'model'  => \Modules\School\Models\AdminUser::class,
+                'model'  => \Modules\Master\Models\AdminUser::class,
             ],
         ],
         'except'        => [
@@ -77,7 +77,7 @@ return [
 
     'layout' => [
         // 浏览器标题, 功能名称使用 %title% 代替
-        'title'              => '%title% | school Admin™',
+        'title'              => '%title% | master Admin™',
         'header'             => [
             // 是否显示 [刷新] 按钮
             'refresh'      => true,
@@ -105,14 +105,14 @@ return [
          */
         'keep_alive_exclude' => [],
         // 底部信息
-        'footer'             => '<a href="https://github.com/dagasmart/bizadmin" target="_blank">school Admin</a>',
+        'footer'             => '<a href="https://github.com/dagasmart/bizadmin" target="_blank">master Admin</a>',
     ],
 
     'models' => [
-        'admin_user'           => \Modules\School\Models\AdminUser::class,
-        'admin_role'           => \Modules\School\Models\AdminRole::class,
-        'admin_menu'           => \Modules\School\Models\AdminMenu::class,
-        'admin_permission'     => \Modules\School\Models\AdminPermission::class,
-        'admin_role_user'      => \Modules\School\Models\AdminRoleUser::class,
+        'admin_user'           => \Modules\Master\Models\AdminUser::class,
+        'admin_role'           => \Modules\Master\Models\AdminRole::class,
+        'admin_menu'           => \Modules\Master\Models\AdminMenu::class,
+        'admin_permission'     => \Modules\Master\Models\AdminPermission::class,
+        'admin_role_user'      => \Modules\Master\Models\AdminRoleUser::class,
     ],
 ];

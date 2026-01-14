@@ -24,4 +24,9 @@ Route::group([
 
     $router->get('test/index', [\App\Admin\Controllers\TestController::class, 'index']);
 
+    $router->get('test/photoBatch', [\App\Admin\Controllers\TestController::class, 'photoBatch']);
+    $router->get('test/flushBatch', [\App\Admin\Controllers\TestController::class, 'flushBatch']);
+    $router->get('test/batch', [\App\Admin\Controllers\TestController::class, 'batch']);
+    $router->get('test/demo', [\App\Admin\Controllers\TestController::class, 'demo']);
+
 });

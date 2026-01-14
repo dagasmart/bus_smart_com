@@ -15,10 +15,13 @@ return [
     'name'           => env('ADMIN_APP_NAME', 'dagaSmart™'),
 
     // 应用 logo
-    'logo'           => env('ADMIN_LOGO', '/admin-assets/logo.png'),
+    'logo'           => env('ADMIN_LOGO', '/admin-assets/logo.svg'),
 
     // 默认头像
-    'default_avatar' => env('ADMIN_DEFAULT_AVATAR', '/admin-assets/default-avatar.png'),
+    'default_avatar' => env('ADMIN_DEFAULT_AVATAR', '/admin-assets/default-avatar.svg'),
+
+    // 默认占位图片
+    'default_image' => env('ADMIN_DEFAULT_IMAGE', '/admin-assets/default-image.svg'),
 
     // 应用安装目录
     'directory'      => app_path('Admin'),

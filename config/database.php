@@ -68,6 +68,16 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+            // 添加连接池配置
+            'pool' => [
+                'max_connections' => 5, // 最大连接数
+                'connection_lifetime' => 600, // 连接生命周期（秒）
+                'wait_timeout' => 10, // 等待超时时间（秒）
+                'heartbeat' => -1, // 心跳间隔时间（秒），-1 表示不启用
+                'max_idle_time' => 60, // 最大空闲时间（秒）
+                'capacity' => 10, // 池容量
+                'acquire_timeout' => 10000, // 获取连接的超时时间（毫秒）
+            ],
         ],
 
         'mariadb' => [
@@ -96,6 +106,16 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+            // 添加连接池配置
+            'pool' => [
+                'max_connections' => 5, // 最大连接数
+                'connection_lifetime' => 600, // 连接生命周期（秒）
+                'wait_timeout' => 10, // 等待超时时间（秒）
+                'heartbeat' => -1, // 心跳间隔时间（秒），-1 表示不启用
+                'max_idle_time' => 60, // 最大空闲时间（秒）
+                'capacity' => 10, // 池容量
+                'acquire_timeout' => 10000, // 获取连接的超时时间（毫秒）
+            ],
         ],
 
         'pgsql' => [
@@ -108,6 +128,11 @@ return [
             'write' => [
                 'host' => explode(',', env('DB_HOST', 'localhost')),
             ],
+            //'pool' => [
+            //    'min_connections' => 3,
+            //    'max_connections' => 20,
+            //    'max_lifetime' => 300,
+            //],
             'pool' => env('PGSQL_POOL', 20), // 设置连接池最大连接数为10
             'min_connections' => 1, // 最小空闲连接数
             'max_connections' => 1024, // 实际最大可连接数
@@ -253,6 +278,43 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => env('DB_SCHEMA_DEV','public'),
+            'sslmode' => 'prefer',
+        ],
+
+
+        /**
+         * school数据库
+         *
+         * 连接pgsql
+         */
+        'school' => [
+            'driver' => env('DB_CONNECTION_SCHOOL', 'pgsql'),
+            //读
+            'read' => [
+                'host' => explode(',', env('DB_READ_HOST_SCHOOL', 'localhost')),
+            ],
+            //写
+            'write' => [
+                'host' => explode(',', env('DB_HOST_SCHOOL', 'localhost')),
+            ],
+            'pool' => env('PGSQL_POOL', 10), // 设置连接池最大连接数为10
+            'min_connections' => 10, // 最小空闲连接数
+            'max_connections' => 1024, // 实际最大可连接数
+            'max_idle_time' => 10, // 连接在池中最长可以空闲的时间
+            'options' => [
+                'persistent' => true, // 开启持久化连接,会导致资源争用，谨慎使用
+                'connect_timeout' => 5, // 设置连接超时时间为5秒
+            ],
+            'sticky' => true, //读写一致性请求
+            'port' => env('DB_PORT_SCHOOL', '5432'),
+            'database' => env('DB_DATABASE_SCHOOL', 'laravel'),
+            'username' => env('DB_USERNAME_SCHOOL', 'postgres'),
+            'password' => env('DB_PASSWORD_SCHOOL', '123456'),
+            'charset' => env('DB_CHARSET_SCHOOL', 'utf8'),
+            'engine' => env('DB_ENGINE_SCHOOL', 'InnoDB'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => env('DB_SCHEMA_SCHOOL','public'),
             'sslmode' => 'prefer',
         ],
 

@@ -2,33 +2,34 @@
 
 namespace App\Admin\Controllers;
 
+use DagaSmart\BizAdmin\Renderers\Form;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use DagaSmart\BizAdmin\Controllers\AdminController;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class SettingController extends AdminController
 {
-    public function index()
+    public function index(): JsonResponse|JsonResource
     {
+
         if ($this->actionOfGetData()) return $this->response()->success(settings()->all());
 
         $page = $this->basePage()->body([
             amis()->Alert()
             ->showIcon()
+            ->showCloseButton()
             ->style([
                 'padding' => '1rem',
-                'color' => 'var(--colors-brand-6)',
                 'borderStyle' => 'dashed',
-                'borderColor' => 'var(--colors-brand-6)',
-                'backgroundColor' => 'var(--Tree-item-onChekced-bg)',
             ])
-            ->body("此处内容仅供演示, 设置项无实际意义，实际开发中请根据实际情况进行修改。"),
+            ->body("此处请根据实际情况进行修改"),
             $this->form(),
         ]);
 
         return $this->response()->success($page);
     }
 
-    public function form()
+    public function form(): Form
     {
         return $this->baseForm(false)
             ->redirect('')
@@ -48,7 +49,7 @@ class SettingController extends AdminController
             );
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse|JsonResource
     {
         $data = $request->only([
             'site_name',
@@ -56,7 +57,6 @@ class SettingController extends AdminController
             'upload_domain',
             'upload_path',
         ]);
-
         return settings()->adminSetMany($data);
     }
 }

@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Admin\Controllers;
+namespace Modules\Master\Controllers;
 
+use DagaSmart\BizAdmin\Admin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use DagaSmart\BizAdmin\Controllers\AdminController;
 
 class HomeController extends AdminController
 {
     public function index(): JsonResponse|JsonResource
     {
         $page = $this->basePage()->css($this->css())->body([
-            amis()->Grid()->className('mb-1')->columns([
-                $this->frameworkInfo()->set('md', 5),
+            amis()->Grid()->columns([
+                $this->frameworkInfo()->md(5),
                 amis()->Flex()->items([
                     $this->pieChart(),
                     $this->cube(),
                 ]),
             ]),
             amis()->Grid()->columns([
-                $this->lineChart()->set('md', 8),
+                $this->lineChart()->md(8),
                 amis()->Flex()->className('h-full')->items([
                     $this->clock(),
                     $this->codeView(),
@@ -35,8 +37,6 @@ class HomeController extends AdminController
             amis()->Markdown()->options(['html' => true, 'breaks' => true])->value(<<<MD
 ### __The beginning of everything__
 
-<br>
-
 ```php
 <?php
 
@@ -49,8 +49,7 @@ MD
 
     public function clock()
     {
-        /** @noinspection all */
-        return amis()->Card()->className('h-full bg-blingbling mb-4')->header(['title' => 'Clock'])->body([
+        return amis()->Card()->className('h-full bg-blingbling')->header(['title' => 'Clock'])->body([
             amis()->Custom()
                 ->name('clock')
                 ->html('<div id="clock" class="text-4xl"></div><div id="clock-date" class="mt-5"></div>')
@@ -77,7 +76,7 @@ JS
                 ->level('link')
                 ->className('text-lg font-semibold')
                 ->label($label)
-                ->set('blank', true)
+                ->blank(true)
                 ->actionType('url')
                 ->link($link);
         };
@@ -90,13 +89,13 @@ JS
                     ->justify('center')
                     ->alignItems('center')
                     ->items([
-                        amis()->Image()->src(url(admin_config('admin.logo'))),
-                        amis()->Wrapper()->className('text-3xl mt-9 font-bold')->body(settings()->get('site_name', admin_config('admin.name'))),
+                        amis()->Image()->src(url(Admin::config('admin.logo'))),
+                        amis()->Wrapper()->className('text-3xl mt-9 font-bold')->body(Admin::config('admin.name')),
                         amis()->Flex()->className('w-full mt-5')->justify('center')->items([
-                            $link('官网', admin_url('system/soft')),
-                            $link('消息', admin_url('system/message')),
-                            $link('待办', 'https://doc.dagasmart.com'),
-                            $link('客服', 'https://demo.dagasmart.com'),
+                            $link('代码', 'https://github.com/dagasmart/bizadmin'),
+                            $link('官网', 'https://biz.dagasmart.com'),
+                            $link('文档', 'https://doc.biz.dagasmart.com'),
+                            $link('演示', 'https://demo.biz.dagasmart.com'),
                         ]),
                     ]),
             ])
@@ -127,11 +126,11 @@ JS
                         ],
                         'labelLine'         => ['show' => false],
                         'data'              => [
-                            ['value' => 1048, 'name' => '用户'],
-                            ['value' => 735, 'name' => '代理商'],
-                            ['value' => 580, 'name' => '开发者'],
-                            ['value' => 484, 'name' => '商户'],
-                            ['value' => 300, 'name' => 'VIP'],
+                            ['value' => 1048, 'name' => 'Search Engine'],
+                            ['value' => 735, 'name' => 'Direct'],
+                            ['value' => 580, 'name' => 'Email'],
+                            ['value' => 484, 'name' => 'Union Ads'],
+                            ['value' => 300, 'name' => 'Video Ads'],
                         ],
                     ],
                 ],
@@ -144,7 +143,7 @@ JS
         $randArr = function () {
             $_arr = [];
             for ($i = 0; $i < 7; $i++) {
-                $_arr[] = rand(50, 200);
+                $_arr[] = random_int(10, 200);
             }
             return $_arr;
         };
@@ -204,7 +203,6 @@ JS
     transform-style: preserve-3d;
     transform: rotateX(90deg) translateY(50px) translateZ(-50px);
     background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 100%;
   }
   .cube div {
     background-color: rgba(64, 158, 255, 0.7);
@@ -213,7 +211,6 @@ JS
     height: 100%;
     border: 1px solid rgb(27, 99, 170);
     box-shadow: 0 0 60px rgba(64, 158, 255, 0.7);
-    border-radius: 100%;
   }
   .cube div:nth-child(1) { transform: translateZ(-50px); animation: shade 10s -5s linear infinite; }
   .cube div:nth-child(2) { transform: translateZ(50px) rotateY(180deg); animation: shade 10s linear infinite; }
@@ -246,7 +243,6 @@ HTML
 
     private function css(): array
     {
-        /** @noinspection all */
         return [
             '.clear-card-mb'                 => [
                 'margin-bottom' => '0 !important',

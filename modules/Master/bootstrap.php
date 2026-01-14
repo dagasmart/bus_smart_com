@@ -22,7 +22,7 @@ $msgBtn = amis()
                             ->closeOnOutside()
                             ->title(false)
                             ->headerClassName(false)
-                            ->bodyClassName('p-2 h-none overflow-hidden')
+                            ->bodyClassName('bg-gray-100 p-0 overflow-hidden')
                             ->actions()
                             ->body([
                                 amis()
@@ -252,6 +252,3 @@ $msgBtn = amis()
 
 // 追加到已有按钮前
 Admin::prependNav($msgBtn);
-
-
-Admin::js('/assets/js/ws.js');

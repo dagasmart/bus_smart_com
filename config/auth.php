@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'school' => [  // 确保这一项存在
+            'driver' => 'sanctum',
+            'provider' => 'schools',
+        ],
+        'master' => [  // 确保这一项存在
+            'driver' => 'sanctum',
+            'provider' => 'masters',
+        ],
     ],
 
     /*
@@ -69,6 +77,14 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        'schools' => [  // 必须与守护者中的provider匹配
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', \Modules\School\Models\AdminUser::class),
+        ],
+        'masters' => [  // 必须与守护者中的provider匹配
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', \Modules\Master\Models\AdminUser::class),
+        ],
     ],
 
     /*
