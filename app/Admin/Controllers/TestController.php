@@ -48,7 +48,17 @@ class TestController extends Controller
 
     public function index()
     {
-        phpinfo();die;
+        \Swow\Coroutine::run(static function (): void {
+            dump('121');
+        });
+        die;
+        //加密
+        $encrypt_str = base64_encrypt('abc123456');
+        //解密
+        $decrypt_str = base64_decrypt($encrypt_str);
+        print_r(['encrypt_str' => $encrypt_str, 'decrypt_str' => $decrypt_str]);
+
+        die;
 
         // 建立与服务器 RPC 端口的套接字连接
         $client = stream_socket_client('tcp://127.0.0.1:9512', $errorCode, $errorMessage);
