@@ -48,6 +48,13 @@ class TestController extends Controller
 
     public function index()
     {
+
+        // 发送消息
+        \PhpMqtt\Client\Facades\MQTT::publish('some/topic', 'Hello World!');
+
+        die;
+
+
         \Swow\Coroutine::run(static function (): void {
             dump('121');
         });
@@ -622,10 +629,10 @@ die;
         $i = 0;
         $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
         foreach ($files as $file) {
-            \Co\async(function () use (&$i, &$file) {
-                if ($file->isFile()) {
+            \Swow\Coroutine::run(function () use (&$i, &$file) {
+                if ($file->isFile() && $file->getRealPath()) {
                     $i++;
-                    $file_path = str_replace('\\', '/', $file->getRealPath());
+                    $file_path = str_replace('\\', DIRECTORY_SEPARATOR, $file->getRealPath());
                     $info = pathinfo(strtolower($file_path));
                     if ($info && in_array($info['extension'], ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
                         $info['explode'] = explode('/',$info['filename']);
@@ -665,12 +672,12 @@ die;
                 }
             });
             //每1万条数据就刷新缓冲区
-            if ($i % 10 == 0) {
+            if ($i % 5 == 0) {
                 flush(); // 确保内容即时发送到浏览器
                 //ob_flush(); // 清空输出缓冲区
             }
         }
-        \Co\wait();
+        \Swow\Sync\waitAll();
         ob_end_clean(); //清除缓存
         die;
     }
