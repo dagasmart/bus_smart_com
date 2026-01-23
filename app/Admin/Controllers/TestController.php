@@ -50,10 +50,9 @@ class TestController extends Controller
     {
 
         // 发送消息
-        \PhpMqtt\Client\Facades\MQTT::publish('some/topic', 'Hello World!');
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', 'Hello !您收到了吗？');
 
         die;
-
 
         \Swow\Coroutine::run(static function (): void {
             dump('121');
