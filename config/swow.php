@@ -10,7 +10,7 @@ return [
         'host'       => '0.0.0.0',
         'port'       => 8089,
         'options'    => [],
-        //'flags'      => Socket::BIND_FLAG_NONE,
+        'flags'      => Socket::BIND_FLAG_NONE,
     ],
     'servers' => [
         'default' => [

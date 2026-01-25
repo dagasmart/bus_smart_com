@@ -35,6 +35,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileObject;
 use thiagoalessio\TesseractOCR\TesseractOCR;
+use Tpetry\PostgresqlEnhanced\Support\Facades\Schema;
 use Yansongda\Pay\Pay;
 use Swow\Coroutine;
 use Swow\Sync\WaitGroup;
@@ -50,9 +51,152 @@ class TestController extends Controller
     {
 
         // 发送消息
-        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', 'Hello !您收到了吗？');
+        $data = [
+            'time' => date('Y-m-d H:i:s'),
+            'msg' => 'Hello !您收到了吗？ssss'
+        ];
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
 
         die;
+
+        try {
+            $scheme = 'school'; //库模式
+            $name = 'vm_enterprise_grade_classes_student_materialized'; //表视图
+
+            if (!Schema::materializedViewExists($name, $scheme)) {
+                \Swow\Coroutine::run(function () use($scheme, $name) {
+                    Schema::createMaterializedView($scheme . '.' . $name,
+                        'SELECT
+                        a.enterprise_id,b.enterprise_name,a.grade_id,c.grade_name,a.classes_id,d.classes_name,a.student_id,e.student_name,e.id_card,e.student_no
+                        FROM school.biz_enterprise_grade_classes_student a
+                        INNER JOIN school.biz_enterprise b ON a.enterprise_id=b.id
+                        INNER JOIN school.biz_grade c ON a.grade_id=c.id
+                        INNER JOIN school.biz_classes d ON a.classes_id=d.id
+                        INNER JOIN school.biz_student e ON a.student_id=e.id',
+                        withData: false);
+                    \Swow\Coroutine::run(function () use($scheme, $name) {
+                        Schema::refreshMaterializedView($scheme . '.' . $name);
+                    });
+                });
+            } else {
+                \Swow\Coroutine::run(function () use($scheme, $name) {
+                    Schema::refreshMaterializedView($scheme . '.' . $name);
+                });
+            }
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+die;
+
+
+            $coroutine = \Swow\Coroutine::run(function () use ($has, $name, $scheme) {
+                if ($has) {
+                    \Tpetry\PostgresqlEnhanced\Support\Facades\Schema::createMaterializedView(
+                        $name,
+                        '
+                            SELECT
+                            a.enterprise_id,b.enterprise_name,a.grade_id,c.grade_name,a.classes_id,d.classes_name,a.student_id,e.student_name,e.id_card,e.student_no
+                            FROM school.biz_enterprise_grade_classes_student a
+                            INNER JOIN school.biz_enterprise b ON a.enterprise_id=b.id
+                            INNER JOIN school.biz_grade c ON a.grade_id=c.id
+                            INNER JOIN school.biz_classes d ON a.classes_id=d.id
+                            INNER JOIN school.biz_student e ON a.student_id=e.id
+                            ',
+                        withData: false);
+                }
+                \Tpetry\PostgresqlEnhanced\Support\Facades\Schema::refreshMaterializedView($name);
+            });
+            $coroutine->resume();
+            return true;
+
+
+        die;
+
+
+        // 发送消息
+        $data = [
+            'time' => date('Y-m-d H:i:s'),
+            'msg' => 'Hello !您收到了吗？'
+        ];
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
+
+        // 重启系统
+        $data = [
+            "client_id" => config('mqtt-client.connections.default.client_id'),
+            "cmd_id" => time(),
+            "version" => "0.2",
+            "cmd" => "reboot_cam"
+        ];
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
+
+        // 控制设备 IO 开闸
+        $data = [
+            "client_id" => config('mqtt-client.connections.default.client_id'),
+            "cmd_id" => time(),
+            "version" => "0.2",
+            "cmd" => "gpio control",
+            "ctrl_type" => "on"
+        ];
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
+
+        // 创建注册人员
+        $data = [
+            "client_id" => config('mqtt-client.connections.default.client_id'),
+            "version" => "0.2",
+            "cmd" => "create_face",
+            "per_id" => "ff00ff",
+            "face_id" => "ff00ff",
+            "per_name" => "tony",
+            "idcardNum" => "1234",
+            "img_data" => "",
+            "img_url" => "http://dqfile-12521.cos.ap-guangzhou.myqcloud.com/img/DC6F2EF9.jpg",
+            "idcardper" => "51102419999999171x",
+            "s_time" => 0,
+            "e_time" => 1000,
+            "per_type" => 0,
+            "usr_type" => 0,
+            "auth_type" => 0,
+            "auth_type_name" => "c2NobWlkdA==",
+            "dscode_img" => "fffffff"
+
+        ];
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
+
+        // 心跳检测
+//        \Swow\Coroutine::run(static function () {
+//            $mqtt = \PhpMqtt\Client\Facades\MQTT::connection();
+//            $mqtt->subscribe('heartbeat/response', function (string $topic, string $message) {
+//                dump($message);
+//            }, 1);
+//            $mqtt->loop(true);
+//        });
+        // 心跳检测
+//        \Swow\Coroutine::run(static function (): void {
+//            $mqtt = \PhpMqtt\Client\Facades\MQTT::connection();
+//            $wr = new \Swow\Sync\WaitReference();
+//            \Swow\Coroutine::run(static function () use ($mqtt, $wr): void {
+//                $mqtt->subscribe('heartbeat/response', function (string $topic, string $message) {
+//                    dump($message);
+//                }, 1);
+//            });
+//            $mqtt->loop(true);
+//            $wr::wait($wr);
+//            //$channel->push("All workers done\n");
+//        });
+
+        die;
+
+
+
+
+
+
+
+
+
+
+
 
         \Swow\Coroutine::run(static function (): void {
             dump('121');

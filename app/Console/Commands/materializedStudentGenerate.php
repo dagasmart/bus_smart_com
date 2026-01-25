@@ -25,29 +25,35 @@ class materializedStudentGenerate extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): ?bool
+    public function handle(): void
     {
-        $table = 'vm_school_grade_classes_student_materialized';
-
-        if (!Schema::materializedViewExists($table)) {
-            Schema::createMaterializedView($table,
-                'SELECT
-                a.school_id,b.school_name,a.grade_id,c.grade_name,a.classes_id,d.classes_name,a.student_id,e.student_name,e.id_card,e.student_no
-                FROM school.biz_school_grade_classes_student a
-                INNER JOIN school.biz_school b ON a.school_id=b.id
-                INNER JOIN school.biz_grade c ON a.grade_id=c.id
-                INNER JOIN school.biz_classes d ON a.classes_id=d.id
-                INNER JOIN school.biz_student e ON a.student_id=e.id',
-                withData: false);
-        }
         try {
+            $scheme = 'school'; //库模式
+            $name = 'vm_enterprise_grade_classes_student_materialized'; //表视图
 
-            \Co\async(function () use($table) {
-                Schema::refreshMaterializedView($table);
-            });
-            return true;
+            if (!Schema::materializedViewExists($name, $scheme)) {
+                \Swow\Coroutine::run(function () use($scheme, $name) {
+                    Schema::createMaterializedView($scheme . '.' . $name,
+                        'SELECT
+                        a.enterprise_id,b.enterprise_name,a.grade_id,c.grade_name,a.classes_id,d.classes_name,a.student_id,e.student_name,e.id_card,e.student_no
+                        FROM school.biz_enterprise_grade_classes_student a
+                        INNER JOIN school.biz_enterprise b ON a.enterprise_id=b.id
+                        INNER JOIN school.biz_grade c ON a.grade_id=c.id
+                        INNER JOIN school.biz_classes d ON a.classes_id=d.id
+                        INNER JOIN school.biz_student e ON a.student_id=e.id',
+                        withData: false);
+                    \Swow\Coroutine::run(function () use($scheme, $name) {
+                        Schema::refreshMaterializedView($scheme . '.' . $name);
+                    });
+                });
+            } else {
+                \Swow\Coroutine::run(function () use($scheme, $name) {
+                    Schema::refreshMaterializedView($scheme . '.' . $name);
+                });
+            }
+            \Swow\Sync\waitAll();
         } catch (\Throwable $e) {
-            return false;
+            echo $e->getMessage();
         }
 
 //        try {

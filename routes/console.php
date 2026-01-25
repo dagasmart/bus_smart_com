@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Schedule;
 
 //测试
 //Schedule::command('app:system-test')->cron('0 * * * *');
-//Schedule::command('app:system-test')->everySecond();
+Schedule::command('device:access_heartbeat')->everySecond();
 
 //Schedule::call(function () {
 //    file_put_contents(public_path('test\\') . time().'.txt', time());

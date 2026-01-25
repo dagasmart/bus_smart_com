@@ -1,3 +1,17 @@
 /serve
 /public
 /resources/js/echo.js
+rr
+.rr.yaml
+
+**/caddy
+frankenphp
+frankenphp-worker.php
+/.idea
+/*.env
+/bootstrap/cache
+/bootstrap/cache
+/extensions
+/vendor
+/wsock.php
+/composer.lock

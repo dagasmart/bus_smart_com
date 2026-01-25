@@ -29,6 +29,6 @@ class Generate extends Command
         if (!is_dir(public_path('test'))) {
             @mkdir(public_path('test'));
         }
-        return file_put_contents(public_path('test\\'.date('YmdHis').'.txt'), time());
+        return file_put_contents(public_path('test\\'.date('YmdH').'.txt'), time());
     }
 }
