@@ -2,39 +2,45 @@
 
 namespace App\Services;
 
-use PhpMqtt\Client\MqttClient;
+use PhpMqtt\Client\Facades\MQTT;
 
 class MqttService
 {
-    protected MqttClient $client;
+    protected MQTT $client;
 
     public function __construct()
     {
-        $this->client = new MqttClient('tcp://1.15.51.149','21883','mqttx_05e244a3'); // 替换为你的 MQTT 服务器地址和端口
+
+        $this->client = new MQTT();
     }
 
-    public function connect(): void
+    public function connection(): static
     {
-        $this->client->connect();
+        $this->client::connection();
+        return $this;
     }
 
-    public function subscribe($topic, $callback)
+    public function publish($topic, $message): static
     {
-        $this->client->subscribe($topic, function ($message) use ($callback) {
-            $callback($message);
-        });
+        $this->client::publish($topic, $message);
+        //$this->client->disconnect();
+        return $this;
     }
 
-    public function publish($topic, $message)
+    public function subscribe($topic, callable $callback): static
     {
-        $this->client->publish($topic, $message);
+        $this->connection();
+        $this->client::subscribe($topic, $callback);
+        return $this;
     }
 
-    public function disconnect()
+    public function disconnect(): void
     {
         $this->client->disconnect();
     }
-    public function loop(){
-        $this->client->loop();
+
+    public function loop(): void
+    {
+        $this->client->connection()->loop(true, true);
     }
 }

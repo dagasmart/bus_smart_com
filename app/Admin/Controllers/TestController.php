@@ -50,6 +50,16 @@ class TestController extends Controller
     public function index()
     {
 
+        // 发送消息
+        $mqtt = new \App\Services\MqttService();
+        $mqtt->publish('face/f3631cb0-a66a5c60/request', 'Hello from Laravel');
+        $mqtt->subscribe('face/f3631cb0-a66a5c60/response', function ($topic, $message) {
+            dump("Received message on topic [{$topic}]: {$message}");
+            // 在这里处理接收到的消息
+        });
+        //$mqtt->loop();
+        die;
+
         // 创建注册人员
         $data = [
             'client_id' => 'f3631cb0-a66a5c60',
