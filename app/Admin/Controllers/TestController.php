@@ -52,6 +52,13 @@ class TestController extends Controller
 
         // 发送消息
         $mqtt = new \App\Services\MqttService();
+
+        // 发送消息
+        $mqtt->publish('face/f3631cb0-a66a5c60/request', 'Hello from Laravel')
+            ->disconnect();
+        die;
+
+
         $mqtt->publish('face/f3631cb0-a66a5c60/request', 'Hello from Laravel');
         $mqtt->subscribe('face/f3631cb0-a66a5c60/response', function ($topic, $message) {
             dump("Received message on topic [{$topic}]: {$message}");

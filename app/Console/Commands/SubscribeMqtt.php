@@ -8,7 +8,7 @@ use App\Services\MqttService;
 class SubscribeMqtt extends Command
 {
     protected $signature = 'mqtt:subscribe {topic}';
-    protected $description = 'MQTT创建订阅消息';
+    protected $description = 'Subscribe to MQTT topic';
 
     public function handle(): void
     {
@@ -19,7 +19,5 @@ class SubscribeMqtt extends Command
             $this->info("Received message on topic [{$topic}]: {$message}");
             // 在这里处理接收到的消息
         });
-
-        $mqtt->loop();
     }
 }
