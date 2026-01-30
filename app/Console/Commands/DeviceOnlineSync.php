@@ -4,10 +4,10 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class DeviceAccessOnlineSyncCommand extends Command
+class DeviceOnlineSync extends Command
 {
-    protected $signature = 'device:access_online_sync';
-    protected $description = '门禁设备状态同步';
+    protected $signature = 'device:online_sync';
+    protected $description = '设备在线状态同步';
 
     public function handle(): void
     {

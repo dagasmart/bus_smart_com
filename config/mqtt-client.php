@@ -43,13 +43,15 @@ return [
 
             // A specific client id to be used for the connection. If omitted,
             // a random client id will be generated for each new connection.
-            'client_id' => env('MQTT_CLIENT_ID'),
+            'client_id' => str_replace('${random}', uniqid(), env('MQTT_CLIENT_ID', 'laravel-mqtt-'.uniqid())),
 
             // Whether a clean session shall be used and requested by the client.
             // A clean session will let the broker forget about subscriptions and
             // queued messages when the client disconnects. Also, if available,
             // data of a previous session will be deleted when connecting.
             'use_clean_session' => env('MQTT_CLEAN_SESSION', true),
+
+            'qos' => env('MQTT_QOS', 1),
 
             // Whether logging shall be enabled. The default logger will be used
             // with the log level as configured.
@@ -87,9 +89,7 @@ return [
                     'password' => env('MQTT_AUTH_PASSWORD'),
                 ],
 
-                // Can be used to declare a last will during connection. The last will
-                // is published by the broker when the client disconnects abnormally
-                // (e.g. in case of a disconnect).
+                // 可选：遗嘱消息（客户端异常断开时，服务器自动发送）
                 'last_will' => [
                     'topic' => env('MQTT_LAST_WILL_TOPIC'),
                     'message' => env('MQTT_LAST_WILL_MESSAGE'),
@@ -117,7 +117,16 @@ return [
             ],
 
         ],
-
+        //私有连接
+        'private' => [
+            'host' => 'mqtt.example.com',
+            'port' => 1883,
+        ],
+        //公共连接
+        'public' => [
+            'host' => 'test.mosquitto.org',
+            'port' => 1883,
+        ],
     ],
 
 ];

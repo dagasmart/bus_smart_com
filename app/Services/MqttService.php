@@ -3,14 +3,16 @@
 namespace App\Services;
 
 use PhpMqtt\Client\Facades\MQTT;
-
+use Illuminate\Console\Command;
 
 class MqttService
 {
+    protected Command $log;
     protected MQTT $client;
 
     public function __construct()
     {
+        $this->log = new Command;
         $this->client = new Mqtt();
         return $this;
     }
@@ -25,24 +27,18 @@ class MqttService
     {
         try {
             $mqtt = $this->client::connection();
-            //心跳检测
+            //协程
             \Swow\Coroutine::run(static function () use($mqtt, $topic, $callback): void {
-                $mqtt->subscribe($topic, function (string $topic, string $message) {
-                    file_put_contents(public_path('test\\acde' . date('YmdHis') . '.txt'), $message);
-                    $data = json_decode($message);
+                $mqtt->subscribe($topic, function (string $topic, string $message) use ($callback) {
+                    call_user_func($callback, $topic, $message); //动态回调
                 }, 1);
                 $mqtt->loop(true, true);
             });
-            \Swow\Sync\waitAll();
+            //$mqtt->loop(true, true);
+            \Swow\Sync\waitAll();//等待协程结束
         } catch (\Throwable $e) {
             echo $e->getMessage();
         }
     }
-
-    public function disconnect(): void
-    {
-        $this->client::disconnect();
-    }
-
 
 }
