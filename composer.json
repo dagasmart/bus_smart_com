@@ -19,7 +19,6 @@
         "ext-pdo": "*",
         "ext-posix": "*",
         "arthurkushman/php-wss": "^2.0",
-        "aws/aws-sdk-php": "^3.369",
         "dagasmart/bizadmin": "^2.2",
         "deepseek-php/deepseek-laravel": "^2.0",
         "elasticsearch/elasticsearch": "^9.2",

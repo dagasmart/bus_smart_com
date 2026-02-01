@@ -14,10 +14,10 @@ return [
             'endpoint' => env('MINIO_ENDPOINT', 'http://127.0.0.1:9000'),
 
             // Access Key
-            'access_key' => env('MINIO_ACCESS_KEY', 'minioadmin'),
+            'access_key' => env('MINIO_ROOT_USER', 'admin'),
 
             // Secret Key
-            'secret_key' => env('MINIO_SECRET_KEY', 'minioadmin'),
+            'secret_key' => env('MINIO_ROOT_PASSWORD', 'abc123456'),
 
             // 默认 Bucket（可选）
             'bucket' => env('MINIO_BUCKET', 'default'),
