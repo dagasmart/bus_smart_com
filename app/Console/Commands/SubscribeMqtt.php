@@ -43,6 +43,17 @@ class SubscribeMqtt extends Command
                         $this->info("Received message on topic [{$topic}]: {$message}");
                     }
 
+                    // 获取下发指令回复结果
+                    if ($data && $topic == 'face/id/response') {
+                        file_put_contents(public_path('test\\face_id_response_' . date('YmdHis') . '.txt'), $message);
+                    }
+
+                    // 获取推送人脸识别结果
+                    if ($data && $topic == 'face/response') {
+                        file_put_contents(public_path('test\\face_response_' . date('YmdHis') . '.txt'), $message);
+
+                    }
+
                 });
                 // 在这里处理接收到的消息
             });

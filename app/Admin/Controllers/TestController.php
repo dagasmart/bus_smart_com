@@ -25,6 +25,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\DB;
 use JsonMachine\Items;
+use Junges\Kafka\Facades\Kafka;
 use Kra8\Snowflake\Snowflake;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
@@ -49,13 +50,26 @@ class TestController extends Controller
 
     public function index()
     {
+//        $producer = Kafka::publish('broker')
+//            ->onTopic('topic')
+//            ->withConfigOptions(['key' => 'value'])
+//            ->withKafkaKey('kafka-key')
+//            ->withHeaders(['header-key' => 'header-value']);
+//
+//        $res = $producer->send();
+//
+//        dump($producer);
+//
+//        die;
 
         // 发送消息
         $mqtt = new \App\Services\MqttService();
 
         // 发送消息
-        $mqtt->publish('face/f3631cb0-a66a5c60/request', 'Hello from Laravel')
-            ->disconnect();
+        $mqtt->publish('face/f3631cb0-a66a5c60/request', 'Hello from Laravel');
+        $message = ['client_id' => 'f3631cb0-a66a5c60', 'version' => '0.2', 'cmd' => 'get_user_rightsex'];
+        //$mqtt->publish('face/f3631cb0-a66a5c60/request', 'abc 123456');
+
         die;
 
 

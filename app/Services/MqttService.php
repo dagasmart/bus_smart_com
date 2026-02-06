@@ -41,4 +41,9 @@ class MqttService
         }
     }
 
+    public function disconnect(): void
+    {
+        $this->client->disconnect();
+    }
+
 }

@@ -20,13 +20,13 @@ Schedule::command('device:online_sync')->everyTenSeconds();
 //设备心跳检测 2s
 Schedule::command('mqtt:subscribe heartbeat/response')->everyTwoSeconds();
 //获取下发命令返回值，MQTT服务端需要订阅
-//Schedule::command('mqtt:subscribe face/id/response')->everyTwoSeconds();
+Schedule::command('mqtt:subscribe face/id/response')->everyTwoSeconds();
 //推送人脸识别结果
-//Schedule::command('mqtt:subscribe face/response')->everyTwoSeconds();
+Schedule::command('mqtt:subscribe face/response')->everyTwoSeconds();
 //二维码数据
 //Schedule::command('mqtt:subscribe qr/response')->everyTwoSeconds();
 //设备上线
-Schedule::command('mqtt:subscribe online/response')->everyFiveSeconds();
+//Schedule::command('mqtt:subscribe online/response')->everyFiveSeconds();
 //推送遗嘱
 //Schedule::command('mqtt:subscribe will/sn/response')->everyTwoSeconds();
 
