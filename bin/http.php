@@ -12,60 +12,23 @@
 
 declare(strict_types=1);
 
-use Swow\Buffer;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Swow\Coroutine;
 use Swow\Socket;
-use Swow\SocketException;
 
 $server = new Socket(Socket::TYPE_TCP);
 $server->bind('127.0.0.1', 9764)->listen();
-while (true) {
-    $connection = $server->accept();
 
-
+Coroutine::run(function () use ($server) {
     while (true) {
-        $connection = $server->acceptConnection();
-        \Swow\Coroutine::run(static function () use ($connection): void {
-            try {
-                while (true) {
-                    $request = null;
-                    try {
-                        $request = $connection->recvHttpRequest();
-                        if ($request->getUri()->getPath() === '/') {
-                            $connection->respond('22222');
-                        }
-                    } catch (Throwable $exception) {
-                    }
-                }
-            } catch (Throwable $exception) {
-            }
+        $client = $server->accept();
+        Coroutine::run(function () use ($client) {
+            $request = $client->readString();
+            /** @var Application $app */
+            $app = require_once __DIR__.'/../bootstrap/app.php';
+            $app->handleRequest(Request::capture());
+            $client->close();
         });
     }
-
-//    Coroutine::run(static function () use ($connection): void {
-//        $buffer = new Buffer(Buffer::COMMON_SIZE);
-//        try {
-//            while (true) {
-//                $length = $connection->recv($buffer, $buffer->getLength());
-//                if ($length === 0) {
-//                    break;
-//                }
-//                while (true) {
-//                    $eof = strpos($buffer->toString(), "\r\n\r\n");
-//                    if ($eof === false) {
-//                        break;
-//                    }
-//                    $connection->send(
-//                        "HTTP/1.1 200 OK\r\n" .
-//                        "Connection: keep-alive\r\n" .
-//                        "Content-Length: 0\r\n\r\n"
-//                    );
-//                    $requestLength = $eof + strlen("\r\n\r\n");
-//                    $buffer->truncateFrom($requestLength);
-//                }
-//            }
-//        } catch (SocketException $exception) {
-//            echo "No.{$connection->getFd()} goaway! {$exception->getMessage()}" . PHP_EOL;
-//        }
-//    });
-}
+});
