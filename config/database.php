@@ -23,7 +23,7 @@ return [
     | Database Connections
     |--------------------------------------------------------------------------
     |
-    | Below are all of the database connections defined for your application.
+    | Below are all the database connections defined for your application.
     | An example configuration is provided for each database system which
     | is supported by Laravel. You're free to add / remove connections.
     |
@@ -318,6 +318,7 @@ return [
             'sslmode' => 'prefer',
         ],
 
+
         /**
          * mongodb数据库
          *
@@ -326,7 +327,10 @@ return [
         'mongodb' => [
             'driver' => 'mongodb',
             'dsn' => env('MONGODB_URI', 'mongodb://localhost:27017'),
-            'database' => env('MONGODB_DATABASE', 'laravel_app'),
+            'database' => env('MONGODB_DATABASE', 'admin'),
+            'options' => [
+                //'readPreference' => 'secondaryPreferred',
+            ],
         ],
 
 

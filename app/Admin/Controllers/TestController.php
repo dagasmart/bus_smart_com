@@ -5,8 +5,8 @@ namespace App\Admin\Controllers;
 @ini_set('memory_limit', '1G'); //设置运行内存
 
 use Alimranahmed\LaraOCR\Facades\OCR;
-use App\Console\Commands\Test;
 use App\Http\Controllers\Controller;
+use App\Models\MongoModel;
 use CURLFile;
 use DagaSmart\BizAdmin\Models\SystemSoftOrder;
 use DagaSmart\School\Models\Student;
@@ -16,31 +16,25 @@ use Exception;
 use Fiber;
 use Generator;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\DB;
 use JsonMachine\Items;
-use Junges\Kafka\Facades\Kafka;
 use Kra8\Snowflake\Snowflake;
 use OpenSpout\Common\Exception\IOException;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Reader\Exception\ReaderNotOpenedException;
 use Psr\Http\Message\ResponseInterface;
-use Rap2hpoutre\FastExcel\FastExcel;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use SplFileObject;
+use Swow\Coroutine;
+use Swow\Sync\WaitGroup;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use Tpetry\PostgresqlEnhanced\Support\Facades\Schema;
 use Yansongda\Pay\Pay;
-use Swow\Coroutine;
-use Swow\Sync\WaitGroup;
-use function Illuminate\Support\php_binary;
 
 //use Ripple\WebSocket\Server;
 
@@ -50,6 +44,25 @@ class TestController extends Controller
 
     public function index()
     {
+
+        // 动态添加字段
+        $user = new MongoModel();
+        $user->name = 'Alice';
+        $user->preferences = ['theme' => 'dark', 'notifications' => true];
+        $user->save();
+
+        die;
+
+        $success = MongoModel::create([
+            'guid'=> 'cust_1111',
+            'first_name'=> 'John',
+            'family_name' => 'Doe',
+            'email' => 'j.doe@gmail.com',
+            'address' => '123 my street, my city, zip, state, country'
+        ]);
+        dump($success);
+        die;
+
 //        $producer = Kafka::publish('broker')
 //            ->onTopic('topic')
 //            ->withConfigOptions(['key' => 'value'])
