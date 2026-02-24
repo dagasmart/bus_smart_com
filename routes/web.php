@@ -3,13 +3,17 @@
 use App\Admin\Controllers;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/', function () {
-    return view('kafka');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
+//Route::get('/', function () {
+//    return view('kafka');
+//});
+//
+//Route::get('/', function () {
+//    return view('site/index');
+//});
 
 Route::post('/kafka/produce', [Controllers\KafkaController::class, 'produce']);
 
@@ -18,6 +22,7 @@ Route::post('/kafka/produce', [Controllers\KafkaController::class, 'produce']);
  */
 Route::domain('erp.smart.com')->get('/', fn() => redirect('/admin'));
 Route::domain('www.smart.com')->get('/', fn() => redirect('/api'));
+Route::domain('bus.smart.com')->get('/', fn() => redirect('/@/web/index'));
 
 /**
  * 路由报错回调提示
