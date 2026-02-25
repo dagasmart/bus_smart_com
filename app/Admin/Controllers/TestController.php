@@ -44,7 +44,6 @@ class TestController extends Controller
 
     public function index()
     {
-
         // 动态添加字段
         $user = new MongoModel();
         $user->name = 'Alice';
@@ -1508,5 +1507,51 @@ die;
      return $model->query()->insertOrIgnore($data);
     }
 
+
+
+
+
+
+    public function access_face_create(): void
+    {
+
+        // 创建注册人员
+        $data = [
+            'client_id' => 'f3631cb0-a66a5c60',
+            'version' => '0.2',
+            'cmd' => 'create_face',
+            'per_id' => '275191',
+            'face_id' => '275191',
+            'per_name' => '饶~~~',
+            'idcardNum' => '520327201101030145',
+            'img_data' => '',
+            'img_url' => 'http://bjylt.oss-cn-chengdu.aliyuncs.com/image/2026-01/15/520327201101030145.jpg',
+            'idcardper' => '520327201101030145',
+            's_time' => time(),
+            'e_time' => strtotime('+1 year'),
+            'per_type' => 1,
+            'usr_type' => 0,
+            'auth_type' => 1,
+            'auth_type_name' => 'c2NobWlkdA==',
+            'dscode_img' => 'fffffff'
+        ];
+        //f3631cb0-a66a5c60
+        //495462f0-0c7e176d
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
+
+    }
+
+
+    public function access_face_delete(): void
+    {
+        $data = [
+            'client_id' => 'e1976a64-b516cccd121',
+            'version' => '0.2',
+            'cmd' => 'delete_face',
+            'per_id' => '275191',
+            'type' => 0
+        ];
+        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
+    }
 
 }

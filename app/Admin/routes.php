@@ -29,4 +29,9 @@ Route::group([
     $router->get('test/batch', [\App\Admin\Controllers\TestController::class, 'batch']);
     $router->get('test/demo', [\App\Admin\Controllers\TestController::class, 'demo']);
 
+    //门禁指令
+    $router->get('test/access/face/create', [\App\Admin\Controllers\TestController::class, 'access_face_create']);
+    $router->get('test/access/face/delete', [\App\Admin\Controllers\TestController::class, 'access_face_delete']);
+
+
 });
