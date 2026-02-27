@@ -1522,19 +1522,20 @@ die;
             'cmd' => 'create_face',
             'per_id' => '275191',
             'face_id' => '275191',
-            'per_name' => '饶~~~',
+            'per_name' => '刘~b~',
             'idcardNum' => '520327201101030145',
             'img_data' => '',
             'img_url' => 'http://bjylt.oss-cn-chengdu.aliyuncs.com/image/2026-01/15/520327201101030145.jpg',
-            'idcardper' => '520327201101030145',
+            'idcardper' => '520327201101030146',
             's_time' => time(),
             'e_time' => strtotime('+1 year'),
-            'per_type' => 1,
-            'usr_type' => 0,
-            'auth_type' => 1,
+            'per_type' => 2, //名单类型	0-白名单 1-黑名单
+            'usr_type' => 1, //权限组 0,1,2,3,4,5
+            'auth_type' => 0,
             'auth_type_name' => 'c2NobWlkdA==',
             'dscode_img' => 'fffffff'
         ];
+        $this->access_face_delete($data['per_id']);
         //f3631cb0-a66a5c60
         //495462f0-0c7e176d
         \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
@@ -1542,13 +1543,13 @@ die;
     }
 
 
-    public function access_face_delete(): void
+    public function access_face_delete($per_id): void
     {
         $data = [
             'client_id' => 'e1976a64-b516cccd121',
             'version' => '0.2',
             'cmd' => 'delete_face',
-            'per_id' => '275191',
+            'per_id' => $per_id,
             'type' => 0
         ];
         \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
