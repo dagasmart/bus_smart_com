@@ -34,21 +34,29 @@ $body = amis()->Page()->body([
                                 amis()
                                     ->Tabs()
                                     ->draggable()
-                                    ->tabsMode('chrome')
+                                    ->tabsMode('line')
                                     ->tabs([
                                         // 系统消息
                                         amis()->Tab()->title('系统消息')->body([
+                                            amis()->ButtonToolbar()->buttons([
+                                                amis()->Action()->label('已读选中项')->size('sm'),
+                                            ]),
                                             amis()->Page()
-                                                ->style(['padding'=>'none','height' => 'calc(100vh - 110px)', 'overflow' => 'hidden'])
+                                                ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
                                                 ->className('rounded-xl border-0 border-solid')
                                                 ->body([
+
                                                     amis()->CRUD2List()
                                                         ->source('${tabs.system}')
-                                                        ->className('text-primary')
+                                                        ->className('text-secondary')
+                                                        ->multiple(false)
+                                                        ->selectable()
+                                                        ->showSelection()
+                                                        ->perPage(10)
                                                         ->listItem([
-                                                            'title' => '${from_name}',
-                                                            'subTitle' => '${updated_at}',
-                                                            'desc' => '<h5 class="text-secondary">${body}</h5>',
+                                                            'title' => null,
+                                                            'subTitle' => '${from_name} ${updated_at}',
+                                                            'desc' => '<span class="text-current text-xs">${body}</span>',
                                                             'actions' => [
                                                                 amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
                                                             ],
