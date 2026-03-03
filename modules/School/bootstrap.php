@@ -39,26 +39,48 @@ $body = amis()->Page()->body([
                                         // 系统消息
                                         amis()->Tab()->title('系统消息')->body([
                                             amis()->ButtonToolbar()->buttons([
-                                                amis()->Action()->label('已读选中项')->size('sm'),
+                                                amis()->Action()
+                                                    ->label('选中设为已读')
+                                                    ->size('xs')
+                                                    ->onEvent([
+                                                        'click' => [
+                                                            'actions' => [
+                                                                [
+                                                                    'actionType' => 'selectAll',
+                                                                    'componentId' => 'badgeMessage',
+                                                                    'description' => '点击设置指定列表全部内容选中',
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]),
                                             ]),
                                             amis()->Page()
-                                                ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
+                                                //->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
                                                 ->className('rounded-xl border-0 border-solid')
                                                 ->body([
-
-                                                    amis()->CRUD2List()
+                                                    amis()->CRUD2List()->id('badgeMessage')
+                                                        ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
                                                         ->source('${tabs.system}')
                                                         ->className('text-secondary')
-                                                        ->multiple(false)
+                                                        //->multiple()
                                                         ->selectable()
                                                         ->showSelection()
                                                         ->perPage(10)
+                                                        ->autoFillHeight()
                                                         ->listItem([
                                                             'title' => null,
                                                             'subTitle' => '${from_name} ${updated_at}',
                                                             'desc' => '<span class="text-current text-xs">${body}</span>',
                                                             'actions' => [
-                                                                amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
+                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
+                                                                amis()->ButtonGroupControl()->buttons([
+                                                                    amis()->Button()->label('详情')
+                                                                        ->level('link')
+                                                                        ->actionType('url')
+                                                                        ->url('/system/message')
+                                                                        ->size('xs'),
+                                                                    amis()->Button()->label('已读')->level('link')->size('xs'),
+                                                                ])
                                                             ],
                                                         ]),
                                                 ]),
