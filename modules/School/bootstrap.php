@@ -37,9 +37,9 @@ $body = amis()->Page()->body([
                                     ->tabsMode('line')
                                     ->tabs([
                                         // 系统消息
-                                        amis()->Tab()->title('系统消息')->body([
+                                        amis()->Tab()->title('系统')->icon('iconfont icon-official-notice')->body([
                                             amis()->ButtonToolbar()->buttons([
-                                                amis()->Action()->label('已读选中项')->size('sm'),
+                                                amis()->Action()->label('选中项设为已读')->size('xs'),
                                             ]),
                                             amis()->Page()
                                                 ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
@@ -53,18 +53,31 @@ $body = amis()->Page()->body([
                                                         ->selectable()
                                                         ->showSelection()
                                                         ->perPage(10)
+                                                        ->onEvent([
+                                                            'type' => 'checkbox',
+                                                            'keyField' => 'id',
+                                                            'rowClick' => 'true',
+                                                        ])
                                                         ->listItem([
                                                             'title' => null,
                                                             'subTitle' => '${from_name} ${updated_at}',
                                                             'desc' => '<span class="text-current text-xs">${body}</span>',
                                                             'actions' => [
-                                                                amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
+                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
+                                                                amis()->ButtonGroup()
+                                                                    ->buttons([
+                                                                        amis()->Button()->label('详情')->size('xs'),
+                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
+                                                                    ])
+                                                                    ->btnLevel('light')
+                                                                    ->btnActiveLevel('primary')
+                                                                    ->vertical(),
                                                             ],
                                                         ]),
                                                 ]),
                                         ]),
                                         // 站内消息
-                                        amis()->Tab()->title('站内消息')->body([
+                                        amis()->Tab()->title('站内')->icon('iconfont icon-message-queue')->body([
                                             amis()->Page()
                                                 ->style(['padding'=>'none','height' => 'calc(100vh - 110px)', 'overflow' => 'hidden'])
                                                 ->className('rounded-xl border-0 border-solid')
@@ -169,6 +182,15 @@ $body = amis()->Page()->body([
                                                         ]),
                                                 ]),
                                         ]),
+                                        // 站内消息
+                                        amis()->Tab()
+                                            ->title([
+                                                amis()->Container()->body([
+                                                    amis()->Tpl()->tpl('聊天')->badge(['mode' => 'text', 'text' => 25]),
+                                                ])
+                                            ])
+                                            ->icon('iconfont icon-header-message')
+                                            ->body([])
                                     ])
                             ])
                     )
