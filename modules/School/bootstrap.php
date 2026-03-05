@@ -5,200 +5,152 @@ use DagaSmart\BizAdmin\Admin;
 $body = amis()->Page()->body([
     amis()
         ->Service()
-        ->ws(['url' => 'ws://127.0.0.1:8080/system/message/badge/data', 'data' => ['name' => '18']])
+        //->ws(['url' => 'ws://0.0.0.0:8080', 'data' => ['name' => '18']])
+        ->ws('ws://1.15.51.149:18789')
         ->api(admin_url('/system/message/badge/data'))
         ->messages('连接失败，请检查网络')
         ->body([
-    amis()->Icon()
-    ->icon('iconfont icon-bell')
-    ->className('text-xl mr-3')
-    ->style(['color'=>''])
-    ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '${count || 0}'])
-    ->onEvent([
-        'click' => [
-            'actions' => [
-                amis()
-                    ->DrawerAction()
-                    ->drawer(
-                        amis()
-                            ->Drawer()
-                            ->resizable(false)
-                            ->closeOnEsc()
-                            ->showCloseButton(false)
-                            ->closeOnOutside()
-                            ->title(false)
-                            ->headerClassName(false)
-                            ->bodyClassName('p-1 overflow-hidden')
-                            ->actions()
-                            ->body([
-                                amis()
-                                    ->Tabs()
-                                    ->draggable()
-                                    ->tabsMode('line')
-                                    ->tabs([
-                                        // 系统消息
-                                        amis()->Tab()->title('系统消息')->body([
-                                            amis()->ButtonToolbar()->buttons([
-                                                amis()->Action()
-                                                    ->label('选中设为已读')
-                                                    ->size('xs')
-                                                    ->onEvent([
-                                                        'click' => [
-                                                            'actions' => [
-                                                                [
-                                                                    'actionType' => 'selectAll',
-                                                                    'componentId' => 'badgeMessage',
-                                                                    'description' => '点击设置指定列表全部内容选中',
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]),
-                                            ]),
-                                            amis()->Page()
-                                                //->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
-                                                ->className('rounded-xl border-0 border-solid')
-                                                ->body([
-                                                    amis()->CRUD2List()->id('badgeMessage')
-                                                        ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
-                                                        ->source('${tabs.system}')
-                                                        ->className('text-secondary')
-                                                        //->multiple()
-                                                        ->selectable()
-                                                        ->showSelection()
-                                                        ->perPage(10)
-                                                        ->autoFillHeight()
-                                                        ->listItem([
-                                                            'title' => null,
-                                                            'subTitle' => '${from_name} ${updated_at}',
-                                                            'desc' => '<span class="text-current text-xs">${body}</span>',
-                                                            'actions' => [
-                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
-                                                                amis()->ButtonGroupControl()->buttons([
-                                                                    amis()->Button()->label('详情')
-                                                                        ->level('link')
-                                                                        ->actionType('url')
-                                                                        ->url('/system/message')
-                                                                        ->size('xs'),
-                                                                    amis()->Button()->label('已读')->level('link')->size('xs'),
-                                                                ])
-                                                            ],
-                                                        ]),
-                                                ]),
-                                        ]),
-                                        // 站内消息
-                                        amis()->Tab()->title('站内消息')->body([
-                                            amis()->Page()
-                                                ->style(['padding'=>'none','height' => 'calc(100vh - 110px)', 'overflow' => 'hidden'])
-                                                ->className('rounded-xl border-0 border-solid')
-                                                ->body([
-                                                    amis()->Card()
-                                                        ->style(['height' => 'calc(100vh - 110px)'])
-                                                        ->className('border-0 overflow-y-auto')
+            amis()->Icon()
+                ->icon('iconfont icon-bell')
+                ->className('text-xl mr-3')
+                ->style(['color'=>''])
+                ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '${tabs.count || 0}'])
+                ->onEvent([
+                    'click' => [
+                        'actions' => [
+                            amis()
+                                ->DrawerAction()
+                                ->drawer(
+                                    amis()
+                                        ->Drawer()
+                                        ->resizable(false)
+                                        ->closeOnEsc()
+                                        ->showCloseButton(false)
+                                        ->closeOnOutside()
+                                        ->title(false)
+                                        ->headerClassName(false)
+                                        ->bodyClassName('p-1 overflow-hidden')
+                                        ->actions()
+                                        ->body([
+                                            amis()
+                                                ->Tabs()
+                                                ->draggable()
+                                                ->tabsMode('line')
+                                                ->tabs([
+                                                    // 系统消息
+                                                    amis()->Tab()
+                                                        ->title([
+                                                            amis()->Container()->body([
+                                                                amis()->Tpl()->tpl('系统')->badge(['mode' => 'text', 'text' => '${tabs.system.length}']),
+                                                            ])
+                                                        ])
+                                                        ->icon('iconfont icon-official-notice')
                                                         ->body([
-                                                            amis()->GroupControl()->direction('vertical')->body([
-                                                                amis()->Alert()
-                                                                    ->level('warning')
-                                                                    ->className('mb-3')
-                                                                    ->showIcon()
-                                                                    ->showCloseButton()
-                                                                    ->title('标题')
-                                                                    ->actions([
-                                                                        amis()->button()
-                                                                            ->label('查看详情')
-                                                                            ->size('xs')
-                                                                            ->level('link')
-                                                                            ->style([
-                                                                                'position'=>'relative',
-                                                                                'top'=>'40px',
-                                                                                'left'=>'30px'
-                                                                            ])
-                                                                    ])
-                                                                    ->body(['创建成功']),
-
-                                                                amis()->Alert()
-                                                                    ->level('success')
-                                                                    ->className('mb-3')
-                                                                    ->showIcon()
-                                                                    ->showCloseButton()
-                                                                    ->title('标题')
-                                                                    ->actions([
-                                                                        amis()->button()
-                                                                            ->label('查看详情')
-                                                                            ->size('xs')
-                                                                            ->level('link')
-                                                                            ->style([
-                                                                                'position'=>'relative',
-                                                                                'top'=>'40px',
-                                                                                'left'=>'30px'
-                                                                            ])
-                                                                    ])
-                                                                    ->body(['创建成功']),
-
-                                                                amis()->Alert()
-                                                                    ->level('info')
-                                                                    ->className('mb-3')
-                                                                    ->showIcon()
-                                                                    ->showCloseButton()
-                                                                    ->title('标题')
-                                                                    ->actions([
-                                                                        amis()->button()
-                                                                            ->label('查看详情')
-                                                                            ->size('xs')
-                                                                            ->level('link')
-                                                                            ->style([
-                                                                                'position'=>'relative',
-                                                                                'top'=>'40px',
-                                                                                'left'=>'30px'
-                                                                            ])
-                                                                    ])
-                                                                    ->body(['创建成功']),
-
-                                                                amis()->Alert()
-                                                                    ->level('danger')
-                                                                    ->className('mb-3')
-                                                                    ->showIcon()
-                                                                    ->icon('iconfont icon-duhome')
-                                                                    ->showCloseButton()
-                                                                    ->title('标题')
-                                                                    ->actions([
-
-                                                                        amis()->flex()
-                                                                            ->justify('flex-start')
-                                                                            ->alignItems('flex-start')
-                                                                            ->direction('column')
-                                                                            ->style(['padding'=>'6px'])
-                                                                            ->items([
-                                                                                amis()->button()
-                                                                                    ->label('详情')
-                                                                                    ->size('xs')
-                                                                                    ->level('primary')
-                                                                                    ->style([
-                                                                                        'position'=>'relative',
-                                                                                        'top'=>'30px',
-                                                                                        'left'=>'30px'
-                                                                                    ]),
-                                                                            ])
-                                                                    ])
-                                                                    ->body(['创建成功']),
-
-                                                                amis()->Alert()->className('bg-gray-50 border-gray-200 border-dashed shadow-md')->body('任务名称'),
-                                                                amis()->Alert()->className('bg-gray-50 border-gray-200 border-dashed shadow-md')->body('任务名称'),
-                                                                amis()->Alert()->className('bg-gray-50 border-gray-200 border-dashed shadow-md')->body('任务名称'),
-                                                                amis()->Alert()->className('bg-gray-50 border-gray-200 border-dashed shadow-md')->body('任务名称'),
-                                                                amis()->Alert()->className('bg-gray-50 border-gray-200 border-dashed shadow-md')->body('任务名称'),
-                                                                amis()->Alert()->className('bg-gray-50 border-gray-200 border-dashed shadow-md')->body('任务名称'),
+                                                            amis()->ButtonToolbar()->buttons([
+                                                                amis()->Action()->label('选中项设为已读')->size('xs'),
                                                             ]),
-                                                        ]),
-                                                ]),
-                                        ]),
-                                    ])
-                            ])
-                    )
-            ]
+                                                            amis()->Page()
+                                                                ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
+                                                                ->className('rounded-xl border-0 border-solid')
+                                                                ->body([
 
-        ]
+                                                                    amis()->CRUD2List()
+                                                                        ->source('${tabs.system}')
+                                                                        ->className('text-secondary')
+                                                                        ->multiple(false)
+                                                                        ->selectable()
+                                                                        ->showSelection()
+                                                                        ->perPage(10)
+                                                                        ->onEvent([
+                                                                            'type' => 'checkbox',
+                                                                            'keyField' => 'id',
+                                                                            'rowClick' => true,
+                                                                        ])
+                                                                        ->listItem([
+                                                                            'title' => '${title}',
+                                                                            'subTitle' => '${from_name} ${updated_at}',
+                                                                            'desc' => '<h5>${simplify}</h5>',
+                                                                            //'body' => amis()->WangEditor('body_dom', false)->value('<h5 class="m-0">${body}</h5>')->height('auto')->static(),
+                                                                            'actions' => [
+                                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
+                                                                                amis()->ButtonGroup()
+                                                                                    ->buttons([
+                                                                                        amis()->Button()->label('详情')->size('xs'),
+                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
+                                                                                    ])
+                                                                                    ->btnLevel('light')
+                                                                                    ->btnActiveLevel('primary')
+                                                                                    ->vertical(),
+                                                                            ],
+                                                                        ]),
+                                                                ]),
+                                                        ]),
+                                                    // 站内消息
+                                                    amis()->Tab()
+                                                        ->title([
+                                                            amis()->Container()->body([
+                                                                amis()->Tpl()->tpl('站内信')->badge(['mode' => 'text', 'text' => '${tabs.private.length}']),
+                                                            ])
+                                                        ])
+                                                        ->icon('iconfont icon-message-queue')
+                                                        ->body([
+                                                            amis()->ButtonToolbar()->buttons([
+                                                                amis()->Action()->label('选中项设为已读')->size('xs'),
+                                                            ]),
+                                                            amis()->Page()
+                                                                ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
+                                                                ->className('rounded-xl border-0 border-solid')
+                                                                ->body([
+
+                                                                    amis()->CRUD2List()
+                                                                        ->source('${tabs.private}')
+                                                                        ->className('text-secondary')
+                                                                        ->multiple(false)
+                                                                        ->selectable()
+                                                                        ->showSelection()
+                                                                        ->perPage(10)
+                                                                        ->onEvent([
+                                                                            'type' => 'checkbox',
+                                                                            'keyField' => 'id',
+                                                                            'rowClick' => 'true',
+                                                                        ])
+                                                                        ->listItem([
+                                                                            'title' => null,
+                                                                            'subTitle' => '${from_name} ${updated_at}',
+                                                                            'desc' => '<span class="text-current text-xs">${body}</span>',
+                                                                            'actions' => [
+                                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
+                                                                                amis()->ButtonGroup()
+                                                                                    ->buttons([
+                                                                                        amis()->Button()->label('详情')->size('xs'),
+                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
+                                                                                    ])
+                                                                                    ->btnLevel('light')
+                                                                                    ->btnActiveLevel('primary')
+                                                                                    ->vertical(),
+                                                                            ],
+                                                                        ]),
+                                                                ]),
+                                                        ]),
+                                                    // 站内消息
+                                                    amis()->Tab()
+                                                        ->title([
+                                                            amis()->Container()->body([
+                                                                amis()->Tpl()->tpl('聊天')->badge(['mode' => 'text', 'text' => 25]),
+                                                            ])
+                                                        ])
+                                                        ->icon('iconfont icon-header-message')
+                                                        ->body([
+
+                                                        ])
+                                                ])
+                                        ])
+                                )
+                        ]
+
+                    ]
+                ]),
         ]),
-    ]),
 ]);
 
 //$body = amis()->Service()
