@@ -5,10 +5,14 @@ use DagaSmart\BizAdmin\Admin;
 $body = amis()->Page()->body([
     amis()
         ->Service()
-        //->ws(['url' => 'ws://0.0.0.0:8080', 'data' => ['name' => '18']])
-        ->ws('ws://1.15.51.149:18789')
+        //->ws(['url' => 'ws://1.15.51.149:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'auth' => '18', 'channel' => 'channel-pub']])
+        ->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'auth' => '18', 'channel' => 'channel-pub']])
+        //->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' => ['name' => '18']])
+        //->ws('ws://1.15.51.149:18789')
+        //->ws('ws://1.15.51.149:18789')
         ->api(admin_url('/system/message/badge/data'))
         ->messages('连接失败，请检查网络')
+        ->showErrorMsg()
         ->body([
             amis()->Icon()
                 ->icon('iconfont icon-bell')

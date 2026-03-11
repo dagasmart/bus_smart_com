@@ -44,6 +44,9 @@ class TestController extends Controller
 
     public function index()
     {
+        event(new \App\Events\TestEvent('abcdef，Hello'));
+        die;
+
         // 动态添加字段
         $user = new MongoModel();
         $user->name = 'Alice';
@@ -1514,45 +1517,45 @@ die;
 
     public function access_face_create(): void
     {
-
+        $device_sn = 'f3631cb0-a66a5c60';
         // 创建注册人员
         $data = [
-            'client_id' => 'f3631cb0-a66a5c60',
+            'client_id' => date('Ymd'),
             'version' => '0.2',
             'cmd' => 'create_face',
-            'per_id' => '275191',
-            'face_id' => '275191',
-            'per_name' => '刘~b~',
-            'idcardNum' => '520327201101030145',
+            'per_id' => '7114',
+            'face_id' => '7114',
+            'per_name' => '王戬12356',
+            'idcardNum' => '53212819840709003',
             'img_data' => '',
-            'img_url' => 'http://bjylt.oss-cn-chengdu.aliyuncs.com/image/2026-01/15/520327201101030145.jpg',
-            'idcardper' => '520327201101030146',
+            'img_url' => 'http://static.xyylt.com/image/2025-10/22/53de05e494d9667afadafd8fd06bf21d84e7f4f1.jpg',
+            'idcardper' => '53212819840709003',
             's_time' => time(),
             'e_time' => strtotime('+1 year'),
             'per_type' => 2, //名单类型	0-白名单 1-黑名单
             'usr_type' => 1, //权限组 0,1,2,3,4,5
             'auth_type' => 0,
             'auth_type_name' => 'c2NobWlkdA==',
-            'dscode_img' => 'fffffff'
+            'dscode_img' => 'fffffff',
+            'device_sn' => $device_sn,
         ];
-        $this->access_face_delete($data['per_id']);
+        $this->access_face_delete($data['per_id'], $data['device_sn']);
         //f3631cb0-a66a5c60
         //495462f0-0c7e176d
-        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
-
+        //0f0a1fcc-9b86a918'
+        \PhpMqtt\Client\Facades\MQTT::publish("face/{$device_sn}/request", json_encode($data, JSON_UNESCAPED_UNICODE));
     }
 
-
-    public function access_face_delete($per_id): void
+    public function access_face_delete($per_id, $device_sn): void
     {
         $data = [
-            'client_id' => 'e1976a64-b516cccd121',
+            'client_id' => date('Ymd'),
             'version' => '0.2',
             'cmd' => 'delete_face',
             'per_id' => $per_id,
             'type' => 0
         ];
-        \PhpMqtt\Client\Facades\MQTT::publish('face/f3631cb0-a66a5c60/request', json_encode($data, JSON_UNESCAPED_UNICODE));
+        \PhpMqtt\Client\Facades\MQTT::publish("face/{$device_sn}/request", json_encode($data, JSON_UNESCAPED_UNICODE));
     }
 
 }
