@@ -44,7 +44,8 @@ class TestController extends Controller
 
     public function index()
     {
-        event(new \App\Events\TestEvent('abcdefok，Hello'));
+        $data = ['tabs' => ['count' => 100]];
+        event((new \App\Events\TestEvent($data)));
         die;
 
         // 动态添加字段
