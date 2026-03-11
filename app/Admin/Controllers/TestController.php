@@ -44,7 +44,7 @@ class TestController extends Controller
 
     public function index()
     {
-        event(new \App\Events\TestEvent('abcdef，Hello'));
+        event(new \App\Events\TestEvent('abcdefok，Hello'));
         die;
 
         // 动态添加字段
