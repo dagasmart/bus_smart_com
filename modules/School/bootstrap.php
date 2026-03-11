@@ -5,20 +5,20 @@ use DagaSmart\BizAdmin\Admin;
 $body = amis()->Page()->body([
     amis()
         ->Service()
-        //->ws(['url' => 'ws://1.15.51.149:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'auth' => '18', 'channel' => 'channel-pub']])
-        ->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'auth' => '18', 'channel' => 'channel-pub']])
-        //->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' => ['name' => '18']])
-        //->ws('ws://1.15.51.149:18789')
-        //->ws('ws://1.15.51.149:18789')
+        //->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'data' => ['auth' => 'abc', 'channel' => 'channel-pub']]])
         ->api(admin_url('/system/message/badge/data'))
+        ->interval(random_int(5000,6000))
+        ->silentPolling()
         ->messages('连接失败，请检查网络')
         ->showErrorMsg()
         ->body([
             amis()->Icon()
-                ->icon('iconfont icon-bell')
-                ->className('text-xl mr-3')
+                //->icon('iconfont icon-bell')
+                ->icon('bell')
+                ->vendor('iconfont')
+                ->className('text-xl mr-3 ${blink}')
                 ->style(['color'=>''])
-                ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '${tabs.count || 0}'])
+                ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '${DECODEJSON(data).message.tabs.count || tabs.count || 0}'])
                 ->onEvent([
                     'click' => [
                         'actions' => [
@@ -60,6 +60,9 @@ $body = amis()->Page()->body([
 
                                                                     amis()->CRUD2List()
                                                                         ->source('${tabs.system}')
+                                                                        //->api(admin_url('/system/message/badge/data'))
+                                                                        //->interval(2000)
+                                                                        //->silentPolling()
                                                                         ->className('text-secondary')
                                                                         ->multiple(false)
                                                                         ->selectable()
