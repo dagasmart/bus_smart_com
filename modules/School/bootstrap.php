@@ -5,12 +5,12 @@ use DagaSmart\BizAdmin\Admin;
 $body = amis()->Page()->body([
     amis()
         ->Service()
-        //->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'data' => ['auth' => 'abc', 'channel' => 'channel-pub']]])
+        ->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'data' => ['auth' => 'abc', 'channel' => 'channel-pub']]])
         ->api(admin_url('/system/message/badge/data'))
         ->interval(random_int(5000,6000))
         ->silentPolling()
         ->messages('连接失败，请检查网络')
-        ->showErrorMsg()
+        ->showErrorMsg(false)
         ->body([
             amis()->Icon()
                 //->icon('iconfont icon-bell')
@@ -18,7 +18,7 @@ $body = amis()->Page()->body([
                 ->vendor('iconfont')
                 ->className('text-xl mr-3 ${blink}')
                 ->style(['color'=>''])
-                ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '${DECODEJSON(data).message.tabs.count || tabs.count || 0}'])
+                ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '${(data && DECODEJSON(data).message.count) || count || 0}'])
                 ->onEvent([
                     'click' => [
                         'actions' => [

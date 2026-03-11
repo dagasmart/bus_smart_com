@@ -16,3 +16,4 @@ frankenphp-worker.php
 /wsock.php
 /composer.lock
 /app/Services/Mqtt3Service.php
+/node_modules

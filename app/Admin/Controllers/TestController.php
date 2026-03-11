@@ -44,7 +44,7 @@ class TestController extends Controller
 
     public function index()
     {
-        $data = ['tabs' => ['count' => 100]];
+        $data = ['tabs' => [],'count' => 100];
         event((new \App\Events\TestEvent($data)));
         die;
 
