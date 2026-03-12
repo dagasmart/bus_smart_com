@@ -17,7 +17,6 @@ $body = amis()->Page()->body([
                 ->icon('bell')
                 ->vendor('iconfont')
                 ->className('text-xl mr-3 ${blink}')
-                ->style(['color'=>''])
                 ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '${(data && DECODEJSON(data).message.count) || count || 0}'])
                 ->onEvent([
                     'click' => [
@@ -41,11 +40,15 @@ $body = amis()->Page()->body([
                                                 ->draggable()
                                                 ->tabsMode('line')
                                                 ->tabs([
-                                                    // 系统消息
+                                                    // 系统通知
                                                     amis()->Tab()
                                                         ->title([
                                                             amis()->Container()->body([
-                                                                amis()->Tpl()->tpl('系统')->badge(['mode' => 'text', 'text' => '${tabs.system.length}']),
+                                                                amis()->Tpl()->tpl('系统')->badge([
+                                                                    'mode' => 'text',
+                                                                    'text' => '${tabs.system.length || 0}',
+                                                                    'visibleOn' => '${tabs.system.length > 0}',
+                                                                ]),
                                                             ])
                                                         ])
                                                         ->icon('iconfont icon-official-notice')
@@ -57,49 +60,53 @@ $body = amis()->Page()->body([
                                                                 ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
                                                                 ->className('rounded-xl border-0 border-solid')
                                                                 ->body([
-
                                                                     amis()->CRUD2List()
+                                                                        ->id('admin_message_system')
                                                                         ->source('${tabs.system}')
-                                                                        //->api(admin_url('/system/message/badge/data'))
-                                                                        //->interval(2000)
-                                                                        //->silentPolling()
+                                                                        ->api(admin_url('/system/message/badge/data'))
                                                                         ->className('text-secondary')
-                                                                        ->multiple(false)
-                                                                        ->selectable()
-                                                                        ->showSelection()
                                                                         ->perPage(10)
-                                                                        ->onEvent([
-                                                                            'type' => 'checkbox',
-                                                                            'keyField' => 'id',
-                                                                            'rowClick' => true,
-                                                                        ])
                                                                         ->listItem([
                                                                             'title' => '${title}',
-                                                                            'subTitle' => '${from_name} ${updated_at}',
+                                                                            'subTitle' => '${from_name} / ${updated_at}',
                                                                             'desc' => '<h5>${simplify}</h5>',
-                                                                            //'body' => amis()->WangEditor('body_dom', false)->value('<h5 class="m-0">${body}</h5>')->height('auto')->static(),
                                                                             'actions' => [
-                                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
-                                                                                amis()->ButtonGroup()
-                                                                                    ->buttons([
-                                                                                        amis()->Button()->label('详情')->size('xs'),
-                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
-                                                                                    ])
-                                                                                    ->btnLevel('light')
-                                                                                    ->btnActiveLevel('primary')
-                                                                                    ->vertical(),
+                                                                                amis()->AjaxAction()
+                                                                                    ->label('✕')
+                                                                                    ->api('delete:/system/message/${id}')
+                                                                                    ->reload('admin_message_system')
+                                                                                    ->style(['zoom' => 0.7])
+//                                                                                    ->onEvent([
+//                                                                                        'click' => [
+//                                                                                            'actions' => [
+//                                                                                                [
+//                                                                                                    'actionType' => 'setValue',
+//                                                                                                    'args' => [
+//                                                                                                        'variables' => [
+//                                                                                                            'data.tabs.system.length' => 23,
+//                                                                                                        ],
+//                                                                                                    ]
+//                                                                                                ]
+//                                                                                            ]
+//                                                                                        ],
+//                                                                                    ]),
+
                                                                             ],
                                                                         ]),
                                                                 ]),
                                                         ]),
-                                                    // 站内消息
+                                                    // 站内信
                                                     amis()->Tab()
                                                         ->title([
                                                             amis()->Container()->body([
-                                                                amis()->Tpl()->tpl('站内信')->badge(['mode' => 'text', 'text' => '${tabs.private.length}']),
+                                                                amis()->Tpl()->tpl('站内信')->badge([
+                                                                    'mode' => 'text',
+                                                                    'text' => '${tabs.private.length}',
+                                                                    'visibleOn' => '${tabs.private.length > 0}',
+                                                                ]),
                                                             ])
                                                         ])
-                                                        ->icon('iconfont icon-message-queue')
+                                                        ->icon('iconfont icon-official-notice')
                                                         ->body([
                                                             amis()->ButtonToolbar()->buttons([
                                                                 amis()->Action()->label('选中项设为已读')->size('xs'),
@@ -108,38 +115,36 @@ $body = amis()->Page()->body([
                                                                 ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
                                                                 ->className('rounded-xl border-0 border-solid')
                                                                 ->body([
-
                                                                     amis()->CRUD2List()
+                                                                        ->id('admin_message_private')
                                                                         ->source('${tabs.private}')
+                                                                        ->api(admin_url('/system/message/badge/data'))
                                                                         ->className('text-secondary')
-                                                                        ->multiple(false)
-                                                                        ->selectable()
-                                                                        ->showSelection()
                                                                         ->perPage(10)
-                                                                        ->onEvent([
-                                                                            'type' => 'checkbox',
-                                                                            'keyField' => 'id',
-                                                                            'rowClick' => 'true',
-                                                                        ])
                                                                         ->listItem([
-                                                                            'title' => null,
-                                                                            'subTitle' => '${from_name} ${updated_at}',
-                                                                            'desc' => '<span class="text-current text-xs">${body}</span>',
+                                                                            'title' => '${title}',
+                                                                            'subTitle' => '${from_name} / ${updated_at}',
+                                                                            'desc' => '<h5>${simplify}</h5>',
                                                                             'actions' => [
-                                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
-                                                                                amis()->ButtonGroup()
-                                                                                    ->buttons([
-                                                                                        amis()->Button()->label('详情')->size('xs'),
-                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
-                                                                                    ])
-                                                                                    ->btnLevel('light')
-                                                                                    ->btnActiveLevel('primary')
-                                                                                    ->vertical(),
+                                                                                amis()->AjaxAction()
+                                                                                    ->label('✕')
+                                                                                    ->api('delete:/system/message/${id}')
+                                                                                    ->style(['zoom' => 0.7])
+                                                                                    ->reload('admin_message_private'),
+//                                                                                amis()->ButtonGroup()
+//                                                                                    ->buttons([
+//                                                                                        amis()->Button()->label('详情')->size('xs'),
+//                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
+//                                                                                    ])
+//                                                                                    ->btnLevel('light')
+//                                                                                    ->btnActiveLevel('primary')
+//                                                                                    ->vertical(),
                                                                             ],
                                                                         ]),
                                                                 ]),
                                                         ]),
-                                                    // 站内消息
+
+                                                    // 聊天
                                                     amis()->Tab()
                                                         ->title([
                                                             amis()->Container()->body([
@@ -150,6 +155,28 @@ $body = amis()->Page()->body([
                                                         ->body([
 
                                                         ])
+                                                ])->toolbar([
+                                                    amis()->SwitchControl('bell')
+                                                        ->onText(amis()->Icon()->icon('bell'))
+                                                        ->offText(amis()->Icon()->icon('bell'))
+                                                        ->style(['zoom' => 0.7])
+                                                        ->onEvent([
+                                                            'change' => [
+                                                                'actions' => [
+                                                                    [
+                                                                        'actionType' => 'ajax',
+                                                                        'api' => [
+                                                                            'method' => 'post',
+                                                                            'url' => '/system/message/bell',
+                                                                            'data' => [
+                                                                                'bell' => '${value}'
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ]),
+
                                                 ])
                                         ])
                                 )
