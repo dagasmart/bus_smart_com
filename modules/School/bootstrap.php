@@ -79,15 +79,15 @@ $body = amis()->Page()->body([
                                                                             'desc' => '<h5>${simplify}</h5>',
                                                                             //'body' => amis()->WangEditor('body_dom', false)->value('<h5 class="m-0">${body}</h5>')->height('auto')->static(),
                                                                             'actions' => [
-                                                                                amis()->LinkAction()->label('✕')->link('/system/message')->style(['zoom'=>.7]),
-//                                                                                amis()->ButtonGroup()
-//                                                                                    ->buttons([
-//                                                                                        amis()->Button()->label('详情')->size('xs'),
-//                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
-//                                                                                    ])
-//                                                                                    ->btnLevel('light')
-//                                                                                    ->btnActiveLevel('primary')
-//                                                                                    ->vertical(),
+                                                                                //amis()->LinkAction()->label('详情')->link('/system/message')->size('xs'),
+                                                                                amis()->ButtonGroup()
+                                                                                    ->buttons([
+                                                                                        amis()->Button()->label('详情')->size('xs'),
+                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
+                                                                                    ])
+                                                                                    ->btnLevel('light')
+                                                                                    ->btnActiveLevel('primary')
+                                                                                    ->vertical(),
                                                                             ],
                                                                         ]),
                                                                 ]),
