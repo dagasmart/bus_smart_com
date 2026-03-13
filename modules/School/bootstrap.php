@@ -5,7 +5,7 @@ use DagaSmart\BizAdmin\Admin;
 $body = amis()->Page()->body([
     amis()
         ->Service()
-        ->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'data' => ['auth' => 'abc', 'channel' => 'channel-pub']]])
+        //->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'data' => ['auth' => 'abc', 'channel' => 'channel-pub']]])
         ->api(admin_url('/system/message/badge/data'))
         ->interval(random_int(5000,6000))
         ->silentPolling()
@@ -64,8 +64,11 @@ $body = amis()->Page()->body([
                                                                         ->id('admin_message_system')
                                                                         ->source('${tabs.system}')
                                                                         ->api(admin_url('/system/message/badge/data'))
-                                                                        ->className('text-secondary')
+                                                                        ->className('text-secondary border-0')
                                                                         ->perPage(10)
+                                                                        //->selectable()
+                                                                        ->checkOnItemClick()
+                                                                        ->className('green-checkbox-theme')
                                                                         ->listItem([
                                                                             'title' => '${title}',
                                                                             'subTitle' => '${from_name} / ${updated_at}',
@@ -106,7 +109,7 @@ $body = amis()->Page()->body([
                                                                 ]),
                                                             ])
                                                         ])
-                                                        ->icon('iconfont icon-official-notice')
+                                                        ->icon('iconfont icon-message-queue')
                                                         ->body([
                                                             amis()->ButtonToolbar()->buttons([
                                                                 amis()->Action()->label('选中项设为已读')->size('xs'),
