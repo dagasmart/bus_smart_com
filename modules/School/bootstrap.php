@@ -7,13 +7,12 @@ $body = amis()->Page()->body([
         ->Service()
         //->ws(['url' => 'ws://127.0.0.1:8080/app/awh2qmrjbmohoeqdtmuz', 'data' =>['event' => 'pusher:subscribe', 'data' => ['auth' => 'abc', 'channel' => 'channel-pub']]])
         ->api(admin_url('/system/message/badge/count'))
-        ->interval(random_int(5000,6000))
+        ->interval(random_int(5000,5000))
         ->silentPolling()
         ->messages('连接失败，请检查网络')
         ->showErrorMsg(false)
         ->body([
             amis()->Icon()
-                //->icon('iconfont icon-bell')
                 ->icon('bell')
                 ->vendor('iconfont')
                 ->className('text-xl mr-3 ${blink}')
@@ -30,13 +29,14 @@ $body = amis()->Page()->body([
                                         ->closeOnOutside()
                                         ->showCloseButton(false)
                                         ->title(false)
-                                        ->id('admin_message_drawer')
                                         ->resizable(false)
                                         ->headerClassName(false)
                                         ->bodyClassName('p-1 overflow-hidden')
+                                        ->data(['isBell' => false])
                                         ->actions()
                                         ->body([
                                             amis()->Service()
+                                                ->id('admin_message_drawer')
                                                 ->api(admin_url('/system/message/badge/data'))
                                                 ->interval(5000)
                                                 ->silentPolling()
@@ -60,62 +60,40 @@ $body = amis()->Page()->body([
                                                                 ])
                                                                 ->icon('iconfont icon-official-notice')
                                                                 ->body([
-                                                                    amis()->ButtonToolbar()->buttons([
+                                                                    amis()->ButtonToolbar()->className('my-2')->buttons([
                                                                         amis()->AjaxAction()
                                                                             ->api('delete:/system/message/system/all')
-                                                                            ->reload('admin_message_system')
+                                                                            ->reload('admin_message_drawer,admin_message_system')
                                                                             ->label('全部已读')
-                                                                            ->size('xs')
-                                                                            ->onEvent([
-                                                                                'click' => [
-                                                                                    'actions' => [
-                                                                                        [
-                                                                                            'actionType' => 'selectAll',
-                                                                                            'componentId' => 'admin_message_system',
-                                                                                        ]
-                                                                                    ]
-                                                                                ]
-                                                                            ]),
+                                                                            ->confirmText('是否全部设为已读，可在【消息】管理继续查看')
+                                                                            ->confirmTitle('系统')
+                                                                            ->size('xs'),
                                                                     ]),
                                                                     amis()->Page()
-                                                                        ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
+                                                                        ->style(['padding'=>'0','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
                                                                         ->className('rounded-xl border-0 border-solid')
+                                                                        ->showErrorMsg(false)
                                                                         ->body([
                                                                             amis()->CRUD2List()
                                                                                 ->id('admin_message_system')
                                                                                 ->source('${tabs_system}')
-                                                                                ->api(admin_url('/system/message/list/system'))
-                                                                                ->interval(5000)
-                                                                                ->silentPolling()
+                                                                                ->interval(2000)
                                                                                 ->className('border-0')
+                                                                                ->headerToolbarClassName('hidden')
                                                                                 ->perPage(10)
                                                                                 ->listItem([
                                                                                     'title' => '${title}',
                                                                                     'subTitle' => '${from_name} / ${updated_at}',
-                                                                                    'desc' => '<h5>${simplify}</h5>',
+                                                                                    'className' => 'text-secondary',
+                                                                                    'desc' => '<h5 class="text-dark">${simplify}</h5>',
                                                                                     'actions' => [
                                                                                         amis()->AjaxAction()
                                                                                             ->label('✕')
                                                                                             ->api('delete:/system/message/${id}')
-                                                                                            ->reload('admin_message_system')
-                                                                                            ->isolateScope()
+                                                                                            ->reload('admin_message_drawer')
                                                                                             ->style(['zoom' => 0.7])
-                                                                                            ->onEvent([
-                                                                                                'click' => [
-                                                                                                    'actions' => [
-                                                                                                        [
-                                                                                                            'actionType' => 'setValue',
-                                                                                                            'componentId' => 'admin_message_drawer',
-                                                                                                            'args' => [
-                                                                                                                'value' => [
-                                                                                                                    'admin_message_drawer_system_count' => '${admin_message_drawer_system_count > 0 ? (admin_message_drawer_system_count - 1) : 0}',
-                                                                                                                ]
-                                                                                                            ]
-                                                                                                        ]
-                                                                                                    ]
-                                                                                                ],
-                                                                                            ]),
-
+                                                                                            ->tooltip('已读移除')
+                                                                                            ->tooltipPlacement('left'),
                                                                                     ],
                                                                                 ]),
                                                                         ]),
@@ -126,46 +104,47 @@ $body = amis()->Page()->body([
                                                                     amis()->Container()->body([
                                                                         amis()->Tpl()->tpl('站内信')->badge([
                                                                             'mode' => 'text',
-                                                                            'text' => '${badge_private_count}',
+                                                                            'text' => '${badge_private_count || 0}',
                                                                             'visibleOn' => '${badge_private_count > 0}',
                                                                         ]),
                                                                     ])
                                                                 ])
                                                                 ->icon('iconfont icon-message-queue')
                                                                 ->body([
-                                                                    amis()->ButtonToolbar()->buttons([
-                                                                        amis()->Action()->label('选中项设为已读')->size('xs'),
-                                                                    ]),
+                                                                    amis()->ButtonToolbar()->className('my-2')->buttons([
+                                                                        amis()->AjaxAction()
+                                                                            ->api('delete:/system/message/private/all')
+                                                                            ->reload('admin_message_drawer,admin_message_private')
+                                                                            ->label('全部已读')
+                                                                            ->confirmText('是否全部设为已读，可在【消息】管理继续查看')
+                                                                            ->confirmTitle('站内信')
+                                                                            ->size('xs'),
+                                                                                                                                                ]),
                                                                     amis()->Page()
                                                                         ->style(['padding'=>'none','height' => 'calc(100vh - 160px)', 'overflow-x' => 'hidden'])
                                                                         ->className('rounded-xl border-0 border-solid')
+                                                                        ->showErrorMsg(false)
                                                                         ->body([
                                                                             amis()->CRUD2List()
                                                                                 ->id('admin_message_private')
                                                                                 ->source('${tabs_private}')
-                                                                                ->api(admin_url('/system/message/list/private'))
-                                                                                ->interval(5000)
-                                                                                ->silentPolling()
-                                                                                ->className('text-secondary')
+                                                                                ->interval(2000)
+                                                                                ->className('border-0')
+                                                                                ->headerToolbarClassName('hidden')
                                                                                 ->perPage(10)
                                                                                 ->listItem([
                                                                                     'title' => '${title}',
                                                                                     'subTitle' => '${from_name} / ${updated_at}',
-                                                                                    'desc' => '<h5>${simplify}</h5>',
+                                                                                    'className' => 'text-secondary',
+                                                                                    'desc' => '<h5 class="text-dark">${simplify}</h5>',
                                                                                     'actions' => [
                                                                                         amis()->AjaxAction()
                                                                                             ->label('✕')
                                                                                             ->api('delete:/system/message/${id}')
+                                                                                            ->reload('admin_message_drawer')
                                                                                             ->style(['zoom' => 0.7])
-                                                                                            ->reload('admin_message_private'),
-        //                                                                                amis()->ButtonGroup()
-        //                                                                                    ->buttons([
-        //                                                                                        amis()->Button()->label('详情')->size('xs'),
-        //                                                                                        amis()->Button()->label('打开')->level('primary')->size('xs'),
-        //                                                                                    ])
-        //                                                                                    ->btnLevel('light')
-        //                                                                                    ->btnActiveLevel('primary')
-        //                                                                                    ->vertical(),
+                                                                                            ->tooltip('已读移除')
+                                                                                            ->tooltipPlacement('left'),
                                                                                     ],
                                                                                 ]),
                                                                         ]),
