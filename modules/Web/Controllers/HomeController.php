@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Site\Controllers;
+namespace Modules\Web\Controllers;
 
 use DagaSmart\BizAdmin\Admin;
 use Illuminate\Http\JsonResponse;
@@ -90,12 +90,12 @@ JS
                     ->alignItems('center')
                     ->items([
                         amis()->Image()->src(url(Admin::config('admin.logo'))),
-                        amis()->Wrapper()->className('text-3xl mt-9 font-bold')->body(settings()->get('site_name', Admin::config('admin.name'))),
+                        amis()->Wrapper()->className('text-3xl mt-9 font-bold')->body(Admin::config('admin.name')),
                         amis()->Flex()->className('w-full mt-5')->justify('center')->items([
-                            $link('官网', admin_url('system/soft')),
-                            $link('消息', admin_url('system/message')),
-                            $link('待办', 'https://doc.dagasmart.com'),
-                            $link('客服', 'https://demo.dagasmart.com'),
+                            $link('代码', 'https://github.com/dagasmart/bizadmin'),
+                            $link('官网', 'https://biz.dagasmart.com'),
+                            $link('文档', 'https://doc.biz.dagasmart.com'),
+                            $link('演示', 'https://demo.biz.dagasmart.com'),
                         ]),
                     ]),
             ])

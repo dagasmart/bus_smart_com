@@ -3,11 +3,11 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/site', fn() => \DagaSmart\BizAdmin\Admin::view(config('site.admin.route.prefix')));
+Route::get('/web', fn() => \Modules\Web\Base::view(config('site.admin.route.prefix')));
 
 //需登录与鉴权
 Route::group([
-    'as'         => 'site',
+    'as'         => 'web',
     'domain'     => config('site.admin.route.domain'),
     'prefix'     => config('site.admin.route.prefix'),
     'middleware' => config('site.admin.route.middleware'),
@@ -18,7 +18,7 @@ Route::group([
 
 //免登录无限制
 Route::group([
-    'as'         => 'site',
+    'as'         => 'web',
     'domain'     => config('site.admin.route.domain'),
     'prefix'     => config('site.admin.route.prefix'),
 ], function (Router $router) {

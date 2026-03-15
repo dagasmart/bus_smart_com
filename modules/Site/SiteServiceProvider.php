@@ -4,7 +4,7 @@ namespace Modules\Site;
 
 use Illuminate\Support\ServiceProvider;
 
-class MasterServiceProvider extends ServiceProvider
+class SiteServiceProvider extends ServiceProvider
 {
     public function register()
     {

@@ -2,7 +2,7 @@
 
 namespace Modules\Site\Controllers;
 
-use Illuminate\Routing\Controller as AdminAuthController;
+use DagaSmart\BizAdmin\Controllers\AuthController as AdminAuthController;
 
 class AuthController extends AdminAuthController
 {

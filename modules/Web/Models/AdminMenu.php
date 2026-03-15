@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Site\Models;
+namespace Modules\Web\Models;
 
 class AdminMenu extends \DagaSmart\BizAdmin\Models\AdminMenu
 {

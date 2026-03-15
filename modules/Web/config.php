@@ -14,7 +14,7 @@ return [
     'default_image' => '/admin-assets/default-image.svg',
 
     // 引导文件
-    'bootstrap' => base_path('\modules/Site/bootstrap.php'),
+    'bootstrap' => base_path('\modules/Web/bootstrap.php'),
 
     //外部访问
     'link' => env('APP_LINK', env('APP_URL')),
@@ -23,7 +23,7 @@ return [
     'route' => [
         'prefix'               => 'site-api',
         'domain'               => null,
-        'namespace'            => 'Modules\Site\Controllers',
+        'namespace'            => 'Modules\Web\Controllers',
         'middleware'           => ['admin'],
         // 不包含额外路由, 配置后, 不会追加新增/详情/编辑页面路由
         'without_extra_routes' => [
@@ -48,7 +48,7 @@ return [
         'providers' => [
             'site' => [
                 'driver' => 'eloquent',
-                'model'  => \Modules\Site\Models\AdminUser::class,
+                'model'  => \Modules\Web\Models\AdminUser::class,
             ],
         ],
         'except'        => [
@@ -109,10 +109,10 @@ return [
     ],
 
     'models' => [
-        'admin_user'           => \Modules\Site\Models\AdminUser::class,
-        'admin_role'           => \Modules\Site\Models\AdminRole::class,
-        'admin_menu'           => \Modules\Site\Models\AdminMenu::class,
-        'admin_permission'     => \Modules\Site\Models\AdminPermission::class,
-        'admin_role_user'      => \Modules\Site\Models\AdminRoleUser::class,
+        'admin_user'           => \Modules\Web\Models\AdminUser::class,
+        'admin_role'           => \Modules\Web\Models\AdminRole::class,
+        'admin_menu'           => \Modules\Web\Models\AdminMenu::class,
+        'admin_permission'     => \Modules\Web\Models\AdminPermission::class,
+        'admin_role_user'      => \Modules\Web\Models\AdminRoleUser::class,
     ],
 ];

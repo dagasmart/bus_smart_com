@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Site\Controllers;
+namespace Modules\Web\Controllers;
 
 use DagaSmart\BizAdmin\Controllers\AdminController as BaseAdminController;
 

@@ -5,7 +5,7 @@ use DagaSmart\BizAdmin\Admin;
 $msgBtn = amis()
     ->Icon()
     ->icon('iconfont icon-bell')
-    ->className('text-xl mr-5]')
+    ->className('text-xl mr-5')
     ->style(['color'=>''])
     ->badge(['mode' => 'text', 'position' => 'top-left', 'text' => '10'])
     ->onEvent([
@@ -22,7 +22,7 @@ $msgBtn = amis()
                             ->closeOnOutside()
                             ->title(false)
                             ->headerClassName(false)
-                            ->bodyClassName('bg-gray-100 p-5 overflow-hidden')
+                            ->bodyClassName('bg-gray-100 p-0 overflow-hidden')
                             ->actions()
                             ->body([
                                 amis()
