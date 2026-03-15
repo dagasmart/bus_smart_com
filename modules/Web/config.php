@@ -2,16 +2,16 @@
 
 return [
     // 应用名称
-    'name'           => 'site Admin™',
+    'name'           => 'web Admin™',
 
     // 应用 logo
-    'logo'           => '/admin-assets/logo.svg',
+    'logo'           => '/web-assets/logo.svg',
 
     // 默认头像
-    'default_avatar' => '/admin-assets/default-avatar.svg',
+    'default_avatar' => '/web-assets/default-avatar.svg',
 
     // 默认占位图片
-    'default_image' => '/admin-assets/default-image.svg',
+    'default_image' => '/web-assets/default-image.svg',
 
     // 引导文件
     'bootstrap' => base_path('\modules/Web/bootstrap.php'),
@@ -21,10 +21,10 @@ return [
 
     // 应用路由
     'route' => [
-        'prefix'               => 'site-api',
+        'prefix'               => 'web-api',
         'domain'               => null,
         'namespace'            => 'Modules\Web\Controllers',
-        'middleware'           => ['admin'],
+        'middleware'           => ['web'],
         // 不包含额外路由, 配置后, 不会追加新增/详情/编辑页面路由
         'without_extra_routes' => [
             '/dashboard',
@@ -38,15 +38,19 @@ return [
         'enable'        => true,
         // 是否开启鉴权
         'permission'    => true,
-        'guard'         => 'site',
+        'guard'         => 'user',
         'guards' => [
-            'site' => [
-                'driver'   => 'sanctum',
-                'provider' => 'site',
+            'user' => [
+                'driver'   => 'session',
+                'provider' => 'user',
             ],
         ],
         'providers' => [
-            'site' => [
+            'user' => [
+                'driver' => 'eloquent',
+                'model'  => \App\Models\User::class,
+            ],
+            'admin' => [
                 'driver' => 'eloquent',
                 'model'  => \Modules\Web\Models\AdminUser::class,
             ],
@@ -77,7 +81,7 @@ return [
 
     'layout' => [
         // 浏览器标题, 功能名称使用 %title% 代替
-        'title'              => '%title% | site Admin™',
+        'title'              => '%title% | web Admin™',
         'header'             => [
             // 是否显示 [刷新] 按钮
             'refresh'      => true,
@@ -105,7 +109,7 @@ return [
          */
         'keep_alive_exclude' => [],
         // 底部信息
-        'footer'             => '<a href="https://github.com/dagasmart/bizadmin" target="_blank">site Admin</a>',
+        'footer'             => '<a href="https://github.com/dagasmart/bizadmin" target="_blank">web Admin</a>',
     ],
 
     'models' => [
