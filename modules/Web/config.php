@@ -14,7 +14,7 @@ return [
     'default_image' => '/web-assets/default-image.svg',
 
     // 引导文件
-    'bootstrap' => base_path('\modules/Web/bootstrap.php'),
+    'bootstrap' => base_path('/modules/Web/bootstrap.php'),
 
     //外部访问
     'link' => env('APP_LINK', env('APP_URL')),
@@ -24,7 +24,7 @@ return [
         'prefix'               => 'web-api',
         'domain'               => null,
         'namespace'            => 'Modules\Web\Controllers',
-        'middleware'           => ['web'],
+        //'middleware'           => ['web'],
         // 不包含额外路由, 配置后, 不会追加新增/详情/编辑页面路由
         'without_extra_routes' => [
             '/dashboard',
@@ -38,11 +38,11 @@ return [
         'enable'        => true,
         // 是否开启鉴权
         'permission'    => true,
-        'guard'         => 'user',
+        'guard'         => 'admin',
         'guards' => [
-            'user' => [
+            'admin' => [
                 'driver'   => 'session',
-                'provider' => 'user',
+                'provider' => 'admin',
             ],
         ],
         'providers' => [

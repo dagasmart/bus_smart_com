@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['admin-api/*', 'school-api/*', 'master-api/*', 'api/*', 'sanctum/csrf-cookie'], // 指定哪些路由需要应用 CORS 配置
+    'paths' => ['admin-api/*', 'school-api/*', 'master-api/*', 'site-api/*', 'web-api/*', 'api/*', 'sanctum/csrf-cookie'], // 指定哪些路由需要应用 CORS 配置
 
     'allowed_methods' => ['*'], // 允许的方法，'*' 表示所有方法都允许
 
