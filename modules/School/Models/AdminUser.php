@@ -2,6 +2,8 @@
 
 namespace Modules\School\Models;
 
+use Illuminate\Notifications\Notifiable;
+
 class AdminUser extends \DagaSmart\BizAdmin\Models\AdminUser
 {
     protected $table = 'school_admin_users';

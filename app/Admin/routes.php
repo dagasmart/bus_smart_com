@@ -22,7 +22,7 @@ Route::group([
 ], function (Router $router) {
     $router->get('_iconify_search', [\DagaSmart\BizAdmin\Controllers\IndexController::class, 'iconifySearch']);
 
-    $router->get('test/index', [\App\Admin\Controllers\TestController::class, 'index']);
+    $router->get('test/index', [\App\Admin\Controllers\TestController::class, 'index'])->middleware('throttle:10,1,by=concat(request:ip,request:header.cookie)');
 
     $router->get('test/photoBatch', [\App\Admin\Controllers\TestController::class, 'photoBatch']);
     $router->get('test/flushBatch', [\App\Admin\Controllers\TestController::class, 'flushBatch']);

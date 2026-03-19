@@ -7,7 +7,10 @@ namespace App\Admin\Controllers;
 use Alimranahmed\LaraOCR\Facades\OCR;
 use App\Http\Controllers\Controller;
 use App\Models\MongoModel;
+use App\Models\User;
+use App\Notifications\InvoicePaid;
 use CURLFile;
+use DagaSmart\BizAdmin\Admin;
 use DagaSmart\BizAdmin\Models\SystemSoftOrder;
 use DagaSmart\School\Models\Student;
 use DagaSmart\School\Models\StudentDemo;
@@ -22,6 +25,7 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use JsonMachine\Items;
 use Kra8\Snowflake\Snowflake;
 use OpenSpout\Common\Exception\IOException;
@@ -38,33 +42,74 @@ use Yansongda\Pay\Pay;
 
 //use Ripple\WebSocket\Server;
 
+use OpenSpout\Writer\XLSX\Writer;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Cell\StringCell;
+use OpenSpout\Common\Entity\Cell\NumericCell;
+
 
 class TestController extends Controller
 {
 
     public function index()
     {
-        $data = ['tabs' => [],'count' => 100];
-        event((new \App\Events\TestEvent($data)));
-        die;
 
-        // 动态添加字段
-        $user = new MongoModel();
-        $user->name = 'Alice';
-        $user->preferences = ['theme' => 'dark', 'notifications' => true];
-        $user->save();
+        $agent = \App\AiAgents\WeatherAgent::for('user-123');
+        $response = $agent->respond("What's the weather like in Boston?");
+        echo $response;
 
         die;
 
-        $success = MongoModel::create([
-            'guid'=> 'cust_1111',
-            'first_name'=> 'John',
-            'family_name' => 'Doe',
-            'email' => 'j.doe@gmail.com',
-            'address' => '123 my street, my city, zip, state, country'
-        ]);
-        dump($success);
+        $image = 'https://bus.dagasmart.com/storage/images/PIkZORBd51rZ49tAdBExYcvXdWxrV24LkUyXtBVf.jpg_1000.jpg';
+        $fix = pathinfo($image, PATHINFO_EXTENSION);
+        dump($fix);die;
+        $chunk = [
+            'images/0CDgjtHN3mi2gqFuYSuZHKNmM1umEgu9sUi1gdTD.png',
+            'images/4GXeBbdN5Wo07kjjvOoS9h2dCFzjQVyu5SuoGhsC.jpg',
+            'images/1769741952851.png'
+        ];
+
+        // 获取文件系统磁盘的实例
+        $disk = \Illuminate\Support\Facades\Storage::disk(Admin::config('admin.upload.disk'));
+        dump($disk);
+        $disk->delete($chunk);
         die;
+
+
+        Notification::route('mail', 'raoxikui@qq.com')
+            ->notify(new InvoicePaid());
+
+        die;
+
+        $user = new User;
+        $invoice = 1;
+        $user->notify(new InvoicePaid($invoice));
+        $res = $user->notifications()->latest()->limit(10)->get();
+
+        dump($res);
+        die;
+
+//        $data = ['tabs' => [],'count' => 100];
+//        event((new \App\Events\TestEvent($data)));
+//        die;
+//
+//        // 动态添加字段
+//        $user = new MongoModel();
+//        $user->name = 'Alice';
+//        $user->preferences = ['theme' => 'dark', 'notifications' => true];
+//        $user->save();
+//
+//        die;
+//
+//        $success = MongoModel::create([
+//            'guid'=> 'cust_1111',
+//            'first_name'=> 'John',
+//            'family_name' => 'Doe',
+//            'email' => 'j.doe@gmail.com',
+//            'address' => '123 my street, my city, zip, state, country'
+//        ]);
+//        dump($success);
+//        die;
 
 //        $producer = Kafka::publish('broker')
 //            ->onTopic('topic')
@@ -77,6 +122,53 @@ class TestController extends Controller
 //        dump($producer);
 //
 //        die;
+
+
+        // 1. 创建 Writer 对象
+        $writer = new Writer();
+
+        // 2. (可选) 配置选项 - 针对大数据量的关键优化
+        $writer->getTempFolder('/tmp'); // 设置临时文件夹，确保有足够空间
+        $writer->setMaxRowsPerSheet(1000000); // 设置每个 Sheet 的最大行数，超过自动新建 Sheet
+
+        // 3. 打开文件流
+        $fileName = 'large_export.xlsx';
+        $writer->openToFile($fileName);
+
+        // 4. 写入表头
+        $headerRow = Row::fromValues([
+            'ID',
+            '用户名',
+            '邮箱',
+            '注册时间',
+            '状态'
+        ]);
+        $writer->addRow($headerRow);
+
+        // 5. 模拟大数据源 (实际场景中请替换为数据库游标查询)
+        // 关键点：不要一次性 fetchAll()，要使用生成器或逐行 fetch
+        $dataGenerator = $this->generateHugeData();
+
+        foreach ($dataGenerator as $rowIndex => $data) {
+            // 将数组转换为 Row 对象
+            // OpenSpout v4+ 推荐使用 Row::fromValues() 自动推断类型，或手动构建 Cell 对象以获得更高性能
+            $row = Row::fromValues($data);
+
+            $writer->addRow($row);
+
+            // 可选：每处理 10000 行输出一次进度，避免脚本超时或无响应
+            if (($rowIndex + 1) % 10000 === 0) {
+                echo "已导出 " . ($rowIndex + 1) . " 行...\n";
+            }
+        }
+
+        // 6. 关闭 writer，完成文件写入
+        $writer->close();
+
+        echo "导出完成！文件大小：" . round(filesize($fileName) / 1024 / 1024, 2) . " MB\n";
+
+        die;
+
 
         // 发送消息
         $mqtt = new \App\Services\MqttService();
@@ -743,6 +835,20 @@ die;
             'quit_url' => 'https://yansongda.cn',
         ]);
 
+    }
+
+
+    function generateHugeData(): \Generator
+    {
+        for ($i = 1; $i <= 100000; $i++) {
+            yield [
+                $i,
+                "User_{$i}",
+                "user{$i}@example.com",
+                date('Y-m-d H:i:s'),
+                $i % 2 === 0 ? 'Active' : 'Inactive'
+            ];
+        }
     }
 
     function usersGenerator(): Generator
