@@ -6,7 +6,7 @@ use LarAgent\Agent;
 
 class WeatherAgent extends Agent
 {
-    protected $model = 'gpt-4.1-nano';
+    protected $model = 'gpt-oss:20b';
 
     protected $history = 'in_memory';
 
