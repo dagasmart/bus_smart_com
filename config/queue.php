@@ -72,6 +72,17 @@ return [
             'after_commit' => false,
         ],
 
+        'multimodal' => [
+            'driver' => 'multimodal',
+            // 定义不同模态的处理策略
+            'modes' => [
+                'task'      => ['driver' => 'redis',   'connection' => 'default'],
+                'event'     => ['driver' => 'sqs',     'queue' => 'events'],
+                'broadcast' => ['driver' => 'pusher',  'cluster' => 'eu'],
+            ],
+            'fallback_strategy' => 'queue', // 故障转移策略
+        ],
+
     ],
 
     /*
